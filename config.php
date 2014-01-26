@@ -8,5 +8,8 @@ $mysql['data']="ninechan"; // MySQL Database
 
 //// Board Data ////
 $ninechan=array();
-$ninechan['title'] = "ninechan";
-$ninechan['desc'] = "ninechan best shitty board software";
+$ninechan['closed'] = false; // Define whether the board should be open(false) or closed(true)
+$ninechan['title'] = "ninechan"; // Specify the board title
+$ninechan['desc'] = "ninechan best shitty board software"; // Specify the board description
+$ninechan['styleenable'] = true; // Choose whether a CSS Stylesheet should be used or not
+$ninechan['style'] = "ninechan.css"; // Specify the CSS (can be external)
