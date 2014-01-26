@@ -10,10 +10,12 @@ $dbinit=mysql_query("CREATE TABLE IF NOT EXISTS `posts` (`id` int(11) NOT NULL A
 <head>
 <title><?=$ninechan['title'];?></title>
 <meta name="description" content="<?=$ninechan['desc'];?>">
+<?php if($ninechan['styleenable']){print("<link rel=\"stylesheet\" type=\"text/css\" href=\"".$ninechan['style']."\" />");} ?>
 </head>
 <body>
-<h1><a href="./"><?=$ninechan['title'];?></a></h1><address><?=$ninechan['desc'];?></address><hr />
+<h1><a href="./"><?=$ninechan['title'];?></a></h1>&nbsp;<i><?=$ninechan['desc'];?></i><hr />
 <?php
+if($ninechan['closed']){die("The ".$ninechan['title']." boards are closed right now.");}
 if($_GET['v']=="index") {
 	print("<h2>Threads</h2>");
 	print("<h3><a href=?v=post>New Thread</a></h3>");
@@ -35,7 +37,7 @@ if($_GET['v']=="index") {
 	while($row=mysql_fetch_array($threads)) {
 		if($row['op']==1){print("<h2>Thread: ".$row['title']."</h2><h3><a href=?v=post&t=".$row['tid'].">New Reply</a></h3>");$tid=$row['tid'];}
 		print("<fieldset id=".$row['id'].">");
-		if(!$row['email']==""){print("<legend><b>".$row['title']."</b> by <b><a href=\"mailto:".$row['email']."\">".$row['name']."</a></b></legend>");}else{print("<legend><b>".$row['title']."</b> by <b>".$row['name']."</b></legend>");}
+		if(!$row['email']==""){print("<legend><b>".$row['title']."</b> <a href=\"#".$row['id']."\">by</a> <b><a href=\"mailto:".$row['email']."\">".$row['name']."</a></b></legend>");}else{print("<legend><b>".$row['title']."</b> <a href=\"#".$row['id']."\">by</a> <b>".$row['name']."</b></legend>");}
 		print($row['content']);
 		print("<br /><br /><i><font size=2>".$row['date']."</font></i></fieldset>");
 	}
@@ -55,7 +57,7 @@ if($_GET['v']=="index") {
 		print("<h2>New Thread</h2>");
 		print("Title*: <input type=text name=title /><br />");
 	}
-	print("Name: <input type=text name=name /><br />Email: <input type=text name=email /><br />Comment*:<br /><textarea name=content></textarea><br /><font size=2>* = Required</font><br /><input type=submit value=Submit /></form>");
+	print("Name: <input type=text name=name /><br />Email: <input type=text name=email /><br />Comment*:<br /><textarea name=content rows=6 cols=48></textarea><br /><font size=2>* = Required</font><br /><input type=submit value=Submit /></form>");
 } elseif(($_GET['v']=="submit")) {
 if((isset($_POST['title']))&&(!$_POST['title']=="")){$title = htmlentities($_POST['title'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$title = stripslashes($title);}else{die("<h2>no title entered</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
 if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = htmlentities($_POST['name'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$name = stripslashes($name);}else{$name="Anonymous";}
@@ -69,6 +71,6 @@ mysql_query("INSERT INTO `".$mysql['data']."`.`posts` (`title`,`name`,`email`,`d
 print("<h1>posted</h1><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");
 } else {header('Location: ?v=index');}
 ?>
-<h6>Powered by ninechan v1.1 @ <a href="http://flashii.net/">Flashwave</a> 2014</h6>
+<h6>Powered by ninechan v1.2 @ <a href="http://flashii.net/">Flashwave</a> 2014</h6>
 </body>
 </html>
