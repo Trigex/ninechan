@@ -1,0 +1,42 @@
+html, body {
+	font-family: Verdana, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+body {
+	background: linear-gradient(to bottom, #9DAAD9, #FFFFFF);
+	height: 100%;
+	width: 100%;
+}
+hr {
+	border: 1px solid;
+	margin: 0px;
+	padding: 0px;
+}
+h1,h2,h3,h4,h5,h6 {
+	margin: 2px;
+	padding: 0px;
+}
+h1 {
+	display: inline-block;
+}
+h1 a {
+	color: #77F;
+}
+a {
+	text-decoration: none;
+}
+a:hover, a:active {
+	text-decoration: underline;
+}
+legend {
+	background: #9DAAD9;
+	border: 1px solid #999;
+	padding: 2px;
+}
+input[type="text"] {
+	width: 300px;
+}
+input[type="submit"] {
+	padding: 2px;
+}
