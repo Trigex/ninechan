@@ -4,7 +4,18 @@ $connection=mysql_connect($mysql['host'], $mysql['user'], $mysql['pass']);
 if (!($connection)){die("SQL Connection Error.");}
 $databasetest=mysql_select_db($mysql['data']);
 if(!($databasetest)){die("Database Error.");}
-$dbinit=mysql_query("CREATE TABLE IF NOT EXISTS `posts` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;")
+$dbinit=mysql_query("CREATE TABLE IF NOT EXISTS `posts` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;");
+function parseTrip($name){
+	if(ereg("(#|!)(.*)", $name, $matches)){
+		$cap=$matches[2];
+		$cap=strtr($cap,"&amp;", "&");
+		$cap=strtr($cap,",", ",");
+		$salt=substr($cap."H.",1,2);
+		$salt=preg_replace("[^\.-z]",".",$salt);
+		$salt=strtr($salt,":;<=>?@[\\]^_`","ABCDEFGabcdef"); 
+		return substr(crypt($cap,$salt),-10)."";
+	}
+}
 ?>
 <html>
 <head>
@@ -60,7 +71,7 @@ if($_GET['v']=="index") {
 	print("Name: <input type=text name=name /><br />Email: <input type=text name=email /><br />Comment*:<br /><textarea name=content rows=6 cols=48></textarea><br /><font size=2>* = Required</font><br /><input type=submit value=Submit /></form>");
 } elseif($_GET['v']=="submit") {
 	if((isset($_POST['title']))&&(!$_POST['title']=="")){$title = htmlentities($_POST['title'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$title = stripslashes($title);}else{die("<h2>no title entered</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
-	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = htmlentities($_POST['name'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$name = stripslashes($name);}else{$name="Anonymous";}
+	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = htmlentities($_POST['name'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$name = stripslashes($name);$name=(strstr($name,"#",true)."<span class=trip>!".parseTrip($_POST['name'])."</span>");}else{$name="Anonymous";}
 	if(isset($_POST['email'])){$email = htmlentities($_POST['email'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$email = stripslashes($email);}
 	$date=date('d/m/Y @ g:iA T');
 	if((isset($_POST['content']))&&(!$_POST['content']=="")){$content = htmlentities($_POST['content'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$content = nl2br($content);$content = stripslashes($content);}else{die("<h2>no comment entered</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
@@ -71,6 +82,6 @@ if($_GET['v']=="index") {
 	print("<h1>Posted!</h1><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."?v=thread&t=".$tid."\">");
 } else {header('Location: ?v=index');}
 ?>
-<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.3&nbsp;");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
+<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.4 ");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
 </body>
 </html>
