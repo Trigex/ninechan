@@ -14,3 +14,5 @@ $ninechan['desc'] = "ninechan best shitty board software"; // Specify the board 
 $ninechan['styleenable'] = true; // Choose whether a CSS Stylesheet should be used or not
 $ninechan['style'] = "ninechan.css"; // Specify the CSS (can be external)
 $ninechan['showversion'] = true; // Specify whether the version number is shown or not
+$ninechan['sage'] = false; // Specify whether the threads should "disappear" after a certain amount of new threads
+$ninechan['sagelimit'] = 20; // If ['sage'] is set to true, how many threads should be displayed
