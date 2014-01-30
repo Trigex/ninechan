@@ -4,7 +4,7 @@ html, body {
 	padding: 0px;
 }
 body {
-	background: linear-gradient(to bottom, #9DAAD9, #FFFFFF);
+	background: linear-gradient(to bottom, #9DAAD9, #FFFFFF) repeat-x #FFFFFF;
 	height: 100%;
 	width: 100%;
 }
@@ -34,9 +34,13 @@ legend {
 	border: 1px solid #999;
 	padding: 2px;
 }
-input[type="text"] {
+input[type="text"], input[type="password"] {
 	width: 300px;
 }
 input[type="submit"] {
 	padding: 2px;
+}
+.trip {
+	font-weight: normal !important;
+	color: #090;
 }
