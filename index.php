@@ -30,14 +30,14 @@ if($ninechan['closed']){die("The ".$ninechan['title']." boards are closed right 
 if($_GET['v']=="index") {
 	print("<h2>Threads</h2>");
 	print("<h3><a href=?v=post>New Thread</a></h3>");
-	print("<ul>");
-	$threads=mysql_query("SELECT * FROM posts WHERE op='1' ORDER BY id DESC");
+	print("<ol>");
+	if($ninechan['sage']){$threads=mysql_query("SELECT * FROM posts WHERE op='1' ORDER BY id DESC LIMIT ".$ninechan['sagelimit']);}else{$threads=mysql_query("SELECT * FROM posts WHERE op='1' ORDER BY id DESC");}
 	$num_rows=mysql_num_rows($threads);
 	if(!$num_rows){print("There are no threads.");}
 	while($row=mysql_fetch_array($threads)) {
 		print("<li><a href=\"?v=thread&t=".$row['tid']."\">".$row['title']."</a></li>");
 	}
-	print("</ul>");
+	print("</ol>");
 	print("<h3><a href=?v=post>New Thread</a></h3>");
 } elseif(($_GET['v']=="thread")&&(isset($_GET['t']))) {
 	if(!is_numeric($_GET['t'])){header('Location: ./');}
@@ -71,17 +71,18 @@ if($_GET['v']=="index") {
 	print("Name: <input type=text name=name /><br />Email: <input type=text name=email /><br />Comment*:<br /><textarea name=content rows=6 cols=48></textarea><br /><font size=2>* = Required</font><br /><input type=submit value=Submit /></form>");
 } elseif($_GET['v']=="submit") {
 	if((isset($_POST['title']))&&(!$_POST['title']=="")){$title = htmlentities($_POST['title'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$title = stripslashes($title);}else{die("<h2>no title entered</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
-	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = htmlentities($_POST['name'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$name = stripslashes($name);$name=(strstr($name,"#",true)."<span class=trip>!".parseTrip($_POST['name'])."</span>");}else{$name="Anonymous";}
-	if(isset($_POST['email'])){$email = htmlentities($_POST['email'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$email = stripslashes($email);}
+	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = htmlentities($_POST['name'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$name = stripslashes($name);if(strstr($name,"#")){$name=(strstr($name,"#",true)."<span class=trip>!".parseTrip($_POST['name'])."</span>");}}else{$name="Anonymous";}
+	if(isset($_POST['email'])){$email = htmlentities($_POST['email'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$email = stripslashes($email);if(($email=="noko")||($email=="nonoko")){$noredir=true;}}
 	$date=date('d/m/Y @ g:iA T');
 	if((isset($_POST['content']))&&(!$_POST['content']=="")){$content = htmlentities($_POST['content'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$content = nl2br($content);$content = stripslashes($content);}else{die("<h2>no comment entered</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
 	$ip=base64_encode($_SERVER['REMOTE_ADDR']);
 	if(!isset($_POST['tid'])){$op=1;}else{$op=0;}
 	if(isset($_POST['tid'])){$tid = htmlentities($_POST['tid'], ENT_QUOTES | ENT_IGNORE, "UTF-8");$tid = stripslashes($tid);}else{$tidget=mysql_query("SELECT MAX(tid) AS tid FROM posts LIMIT 1");$num_rows=mysql_num_rows($tidget);$tid=0;while($row=mysql_fetch_array($tidget)){$tid=$row['tid'];}++$tid;}
 	mysql_query("INSERT INTO `".$mysql['data']."`.`posts` (`title`,`name`,`email`,`date`,`content`,`ip`,`op`,`tid`) VALUES ('$title','$name','$email','$date','$content','$ip','$op','$tid')");
-	print("<h1>Posted!</h1><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."?v=thread&t=".$tid."\">");
+	print("<h1>Posted!</h1>");
+	if(@$noredir){print("<meta http-equiv=\"refresh\" content=\"1; URL=".$_SERVER['PHP_SELF']."?v=index\">");}else{print("<meta http-equiv=\"refresh\" content=\"1; URL=".$_SERVER['PHP_SELF']."?v=thread&t=".$tid."\">");}
 } else {header('Location: ?v=index');}
 ?>
-<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.4 ");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
+<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.5 ");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
 </body>
 </html>
