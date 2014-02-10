@@ -44,3 +44,13 @@ input[type="submit"] {
 	font-weight: normal !important;
 	color: #090;
 }
+.ban {
+	color: #F00;
+}
+.spoiler {
+	background: black;
+	color: black;
+}
+.spoiler:hover {
+	color: white !important;
+}
