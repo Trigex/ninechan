@@ -107,8 +107,8 @@ if($_GET['v']=="index") {
 			print("<fieldset id=".$row['id'].">");
 			if(!$row['email']==""){print("<legend><b>".$row['title']."</b> <a href=\"#".$row['id']."\">".L_BY."</a> <b><a href=\"mailto:".$row['email']."\">".$row['name']."</a></b></legend>");}else{print("<legend><b>".$row['title']."</b> <a href=\"#".$row['id']."\">".L_BY."</a> <b>".$row['name']."</b></legend>");}
 			print(parseBBcode($row['content'])."<br /><br />");
-			if($row['ban']){print("<b><font size=2 class=ban>".$ninechan['bantext']."</font></b><br />");if($auth==md5($ninechan['modpass'])){print("<font size=2>[<a href=?v=mod&del&id=".$row['id']."&t=".$row['tid'].">".L_DELETE."</a>] [<a href=?v=mod&ban=false&id=".$row['id']."&t=".$row['tid'].">".L_UNBAN."</a>]</font><br />");}}
-			if($auth==md5($ninechan['modpass'])&&!$row['ban']){print("<font size=2>[<a href=?v=mod&del&id=".$row['id']."&t=".$row['tid'].">".L_DELETE."</a>] [<a href=?v=mod&ban=true&id=".$row['id']."&t=".$row['tid'].">".L_BAN."</a>]</font><br />");}
+			if($row['ban']){print("<b><font size=2 class=ban>".$ninechan['bantext']."</font></b><br />");if($auth==md5($ninechan['modpass'])){print("<font size=2>[<a href=?v=mod&del&id=".$row['id']."&t=".$row['tid'].">".L_DELETE."</a>] [<a href=?v=mod&ban=false&id=".$row['id']."&t=".$row['tid'].">".L_UNBAN."</a>] [IP: ".base64_decode($row['ip'])."]</font><br />");}}
+			if($auth==md5($ninechan['modpass'])&&!$row['ban']){print("<font size=2>[<a href=?v=mod&del&id=".$row['id']."&t=".$row['tid'].">".L_DELETE."</a>] [<a href=?v=mod&ban=true&id=".$row['id']."&t=".$row['tid'].">".L_BAN."</a>] [IP: ".base64_decode($row['ip'])."]</font><br />");}
 			print("<i><font size=2>".$row['date']."</font></i></fieldset>");
 		}
 		if($auth==md5($ninechan['modpass'])){print("<font size=2>[<a href=?v=mod&del=purge&id=".$tid.">".L_PURGE."</a>]");if(!$lock){print(" [<a href=?v=mod&lock=true&id=".$tid.">".L_LOCK."</a>]</font>");}else{print(" [<a href=?v=mod&lock=false&id=".$tid.">".L_UNLOCK."</a>]</font>");}}
@@ -181,6 +181,6 @@ if($_GET['v']=="index") {
 	}
 } else {header('Location: ?v=index');}
 ?>
-<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.7 ");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
+<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.7.1 ");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
 </body>
 </html>
