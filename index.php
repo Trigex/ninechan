@@ -36,8 +36,8 @@ function parseTrip($name){
 }
 // Parsing BBS codes //
 function parseBBcode($content){
-	$bbcodecatch=array('/\[b\](.*?)\[\/b\]/is','/\[i\](.*?)\[\/i\]/is','/\[u\](.*?)\[\/u\]/is','/\[url\=(.*?)\](.*?)\[\/url\]/is','/\[url\](.*?)\[\/url\]/is','/\[spoiler\](.*?)\[\/spoiler\]/is');
-	$bbcodereplace=array('<b>$1</b>','<i>$1</i>','<u>$1</u>','<a href="$1" rel="nofollow" title="$2 - $1">$2</a>','<a href="$1" rel="nofollow" title="$1">$1</a>','<span class="spoiler" />$1</span>');
+	$bbcodecatch=array('/\[b\](.*?)\[\/b\]/is','/\[i\](.*?)\[\/i\]/is','/\[u\](.*?)\[\/u\]/is','/\[url\=(.*?)\](.*?)\[\/url\]/is','/\[url\](.*?)\[\/url\]/is','/\[spoiler\](.*?)\[\/spoiler\]/is','/^&gt;(.*?)$/im');
+	$bbcodereplace=array('<b>$1</b>','<i>$1</i>','<u>$1</u>','<a href="$1" rel="nofollow" title="$2 - $1">$2</a>','<a href="$1" rel="nofollow" title="$1">$1</a>','<span class="spoiler">$1</span>','<span class="quote">&gt;$1</span>');
 	$content=preg_replace($bbcodecatch, $bbcodereplace, $content);
 	return $content;
 }
@@ -135,11 +135,11 @@ if($_GET['v']=="index") {
 	}
 	if(!$lock){print("".L_NAME.": <input type=text name=name /><br />".L_EMAIL.": <input type=text name=email /><br />".L_COMMENT."*:<br /><textarea name=content rows=6 cols=48></textarea><br /><font size=2>* = ".L_REQUIRED."</font><br /><input type=submit value=".L_SUBMIT." /></form>");}
 } elseif($_GET['v']=="submit") {
-	if((isset($_POST['title']))&&(!$_POST['title']=="")&&(!strlen($_POST['title']) < $ninechan['titleminlength'])){$title = removeSpecialChars($_POST['title'], false);}else{die("<h2>".L_INVALIDTITLE."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
+	if(strlen($_POST['title']) >= $ninechan['titleminlength']){$title = removeSpecialChars($_POST['title'], false);}else{die("<h2>".L_INVALIDTITLE."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
 	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = removeSpecialChars($_POST['name'], false);if(strstr($name,"#")){$name=(strstr($name,"#",true)."<span class=trip>!".parseTrip($_POST['name'])."</span>");}}else{$name="Anonymous";}
 	if(isset($_POST['email'])){$email = removeSpecialChars($_POST['email'], false);if(($email=="noko")||($email=="nonoko")){$noredir=true;}}
 	$date=date('d/m/Y @ g:iA T');
-	if((isset($_POST['content']))&&(!$_POST['content']=="")&&(!strlen($_POST['content']) < $ninechan['commentminlength'])){$content = removeSpecialChars($_POST['content'], true);}else{die("<h2>".L_NOCOMMENT."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
+	if(strlen($_POST['content']) >= $ninechan['commentminlength']){$content = removeSpecialChars($_POST['content'], true);}else{die("<h2>".L_NOCOMMENT."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
 	$ip=base64_encode($_SERVER['REMOTE_ADDR']);
 	if(!isset($_POST['tid'])){$op=1;}else{$op=0;}
 	if(isset($_POST['tid'])){$tid = removeSpecialChars($_POST['tid'], false);}else{$tidget=mysql_query("SELECT MAX(tid) AS tid FROM ".$mysql['table']." LIMIT 1");$num_rows=mysql_num_rows($tidget);$tid=0;while($row=mysql_fetch_array($tidget)){$tid=$row['tid'];}++$tid;}
@@ -181,6 +181,7 @@ if($_GET['v']=="index") {
 	}
 } else {header('Location: ?v=index');}
 ?>
-<h6>Powered by ninechan <?php if($ninechan['showversion']){print("v1.7.1 ");} ?>&copy; <a href="http://flashwave.pw/">Flashwave</a> 2014</h6>
+<!-- Please retain the full copyright notice below including the link to flashii.net. This not only gives respect to the amount of time given freely by the developer but also helps build interest, traffic and use of ninechan. Thanks, Julian van de Groep -->
+<h6><a href="http://9chan.us">ninechan</a> <?php if($ninechan['showversion']){print("v1.8 ");} ?>&copy; <a href="http://flashii.net/">Flashwave</a></h6>
 </body>
 </html>
