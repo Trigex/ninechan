@@ -33,8 +33,8 @@ function parseTrip($name){
 }
 // Parsing BBS codes //
 function parseBBcode($content){
-	$bbcodecatch=array('/\[b\](.*?)\[\/b\]/is','/\[i\](.*?)\[\/i\]/is','/\[u\](.*?)\[\/u\]/is','/\[url\=(.*?)\](.*?)\[\/url\]/is','/\[url\](.*?)\[\/url\]/is','/\[spoiler\](.*?)\[\/spoiler\]/is','/&gt;&gt;(.*[0-9])/i','/^&gt;(.*?)$/im','/youtube.com\/watch\?v=(.*[a-zA-Z0-9_])/i');
-	$bbcodereplace=array('<b>$1</b>','<i>$1</i>','<u>$1</u>','<a href="$1" rel="nofollow" title="$2 - $1">$2</a>','<a href="$1" rel="nofollow" title="$1">$1</a>','<span class="spoiler">$1</span>','<a class="lquote" href="#$1">&gt;&gt;$1</a>','<span class="quote">&gt;$1</span>','<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
+	$bbcodecatch=array('/\[b\](.*?)\[\/b\]/is','/\[i\](.*?)\[\/i\]/is','/\[u\](.*?)\[\/u\]/is','/\[url\=(.*?)\](.*?)\[\/url\]/is','/\[url\](.*?)\[\/url\]/is','/\[spoiler\](.*?)\[\/spoiler\]/is','/&gt;&gt;(.*[0-9])/i','/^&gt;(.*?)$/im');
+	$bbcodereplace=array('<b>$1</b>','<i>$1</i>','<u>$1</u>','<a href="$1" rel="nofollow" title="$2 - $1">$2</a>','<a href="$1" rel="nofollow" title="$1">$1</a>','<span class="spoiler">$1</span>','<a class="lquote" href="#$1">&gt;&gt;$1</a>','<span class="quote">&gt;$1</span>');
 	$content=preg_replace($bbcodecatch, $bbcodereplace, $content);
 	return nl2br($content);
 }
