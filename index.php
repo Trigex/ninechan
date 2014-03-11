@@ -11,15 +11,12 @@ if (!($connection)){die(L_SQL_CONNECT);}
 $databasetest=mysql_select_db($mysql['data']);
 if(!($databasetest)){die(L_SQL_DATABASE);}
 //// Creating the MySQL table if it does not exist ////
-$dbinit=mysql_query("CREATE TABLE IF NOT EXISTS `".$mysql['table']."` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,`lock` int(11) NOT NULL,`ban` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=13;");
+$dbinit=mysql_query("CREATE TABLE IF NOT EXISTS `".$mysql['table']."` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,`lock` int(11) NOT NULL,`ban` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
 //// Functions ////
 // Stripping HTML entities etc. from posts //
-function removeSpecialChars($input,$textarea){
+function removeSpecialChars($input){
 	$output=htmlentities($input, ENT_QUOTES | ENT_IGNORE, "UTF-8");
 	$output=stripslashes($output);
-	if($textarea) {
-		$output=nl2br($output);
-	}
 	return $output;
 }
 // Parsing tripcodes //
@@ -36,10 +33,10 @@ function parseTrip($name){
 }
 // Parsing BBS codes //
 function parseBBcode($content){
-	$bbcodecatch=array('/\[b\](.*?)\[\/b\]/is','/\[i\](.*?)\[\/i\]/is','/\[u\](.*?)\[\/u\]/is','/\[url\=(.*?)\](.*?)\[\/url\]/is','/\[url\](.*?)\[\/url\]/is','/\[spoiler\](.*?)\[\/spoiler\]/is','/^&gt;(.*?)$/im');
-	$bbcodereplace=array('<b>$1</b>','<i>$1</i>','<u>$1</u>','<a href="$1" rel="nofollow" title="$2 - $1">$2</a>','<a href="$1" rel="nofollow" title="$1">$1</a>','<span class="spoiler">$1</span>','<span class="quote">&gt;$1</span>');
+	$bbcodecatch=array('/\[b\](.*?)\[\/b\]/is','/\[i\](.*?)\[\/i\]/is','/\[u\](.*?)\[\/u\]/is','/\[url\=(.*?)\](.*?)\[\/url\]/is','/\[url\](.*?)\[\/url\]/is','/\[spoiler\](.*?)\[\/spoiler\]/is','/&gt;&gt;(.*[0-9])/i','/^&gt;(.*?)$/im','/youtube.com\/watch\?v=(.*[a-zA-Z0-9_])/i');
+	$bbcodereplace=array('<b>$1</b>','<i>$1</i>','<u>$1</u>','<a href="$1" rel="nofollow" title="$2 - $1">$2</a>','<a href="$1" rel="nofollow" title="$1">$1</a>','<span class="spoiler">$1</span>','<a class="lquote" href="#$1">&gt;&gt;$1</a>','<span class="quote">&gt;$1</span>','<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
 	$content=preg_replace($bbcodecatch, $bbcodereplace, $content);
-	return $content;
+	return nl2br($content);
 }
 // Banning a post //
 function banPost($id,$ban){
@@ -135,14 +132,14 @@ if($_GET['v']=="index") {
 	}
 	if(!$lock){print("".L_NAME.": <input type=text name=name /><br />".L_EMAIL.": <input type=text name=email /><br />".L_COMMENT."*:<br /><textarea name=content rows=6 cols=48></textarea><br /><font size=2>* = ".L_REQUIRED."</font><br /><input type=submit value=".L_SUBMIT." /></form>");}
 } elseif($_GET['v']=="submit") {
-	if(strlen($_POST['title']) >= $ninechan['titleminlength']){$title = removeSpecialChars($_POST['title'], false);}else{die("<h2>".L_INVALIDTITLE."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
-	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = removeSpecialChars($_POST['name'], false);if(strstr($name,"#")){$name=(strstr($name,"#",true)."<span class=trip>!".parseTrip($_POST['name'])."</span>");}}else{$name="Anonymous";}
-	if(isset($_POST['email'])){$email = removeSpecialChars($_POST['email'], false);if(($email=="noko")||($email=="nonoko")){$noredir=true;}}
+	if(strlen($_POST['title']) >= $ninechan['titleminlength']){$title = removeSpecialChars($_POST['title']);}else{die("<h2>".L_INVALIDTITLE."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
+	if((isset($_POST['name']))&&(!$_POST['name']=="")){$name = removeSpecialChars($_POST['name']);if(strstr($name,"#")){$name=(strstr($name,"#",true)."<span class=trip>!".parseTrip($_POST['name'])."</span>");}}else{$name="Anonymous";}
+	if(isset($_POST['email'])){$email = removeSpecialChars($_POST['email']);if(($email=="noko")||($email=="nonoko")){$noredir=true;}}
 	$date=date('d/m/Y @ g:iA T');
-	if(strlen($_POST['content']) >= $ninechan['commentminlength']){$content = removeSpecialChars($_POST['content'], true);}else{die("<h2>".L_NOCOMMENT."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
+	if(strlen($_POST['content']) >= $ninechan['commentminlength']){$content = removeSpecialChars($_POST['content']);}else{die("<h2>".L_NOCOMMENT."</h2><meta http-equiv=\"refresh\" content=\"2; URL=".$_SERVER['PHP_SELF']."\">");}
 	$ip=base64_encode($_SERVER['REMOTE_ADDR']);
 	if(!isset($_POST['tid'])){$op=1;}else{$op=0;}
-	if(isset($_POST['tid'])){$tid = removeSpecialChars($_POST['tid'], false);}else{$tidget=mysql_query("SELECT MAX(tid) AS tid FROM ".$mysql['table']." LIMIT 1");$num_rows=mysql_num_rows($tidget);$tid=0;while($row=mysql_fetch_array($tidget)){$tid=$row['tid'];}++$tid;}
+	if(isset($_POST['tid'])){$tid = removeSpecialChars($_POST['tid']);}else{$tidget=mysql_query("SELECT MAX(tid) AS tid FROM ".$mysql['table']." LIMIT 1");$num_rows=mysql_num_rows($tidget);$tid=0;while($row=mysql_fetch_array($tidget)){$tid=$row['tid'];}++$tid;}
 	mysql_query("INSERT INTO `".$mysql['data']."`.`".$mysql['table']."` (`title`,`name`,`email`,`date`,`content`,`ip`,`op`,`tid`) VALUES ('$title','$name','$email','$date','$content','$ip','$op','$tid')");
 	print("<h1>".L_POSTED."</h1>");
 	if(@$noredir){print("<meta http-equiv=\"refresh\" content=\"1; URL=".$_SERVER['PHP_SELF']."?v=index\">");}else{print("<meta http-equiv=\"refresh\" content=\"1; URL=".$_SERVER['PHP_SELF']."?v=thread&t=".$tid."\">");}
