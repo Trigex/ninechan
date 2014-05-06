@@ -85,3 +85,4 @@ Added reCAPTCHA support
 Added posting password for deletion
 Password, Name and Email are now stored in cookies
 Added post deletion
+Added Option to only make moderators and or administrators fully or name wise anonymous
