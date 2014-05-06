@@ -1,15 +1,28 @@
 ninechan
 ========
 
-Text Board script
+A simple text based discussion board of which you can find the demo, live development, suggestions and support boards on http://nine.flashii.net/
 
-This is some thing I quickly threw together... then decided to continue working on and now is a fully featured BBS script
+Requirements
+------------
 
-Requires a PHP version that supports regular mysql, I recommend PHP 5.4.
+| *Server-Side*          | *Client-Side*                | 
+| ---------------------- | ---------------------------- |
+| PHP >= 5.3             | Enabled JavaScript           |
+| MySQL >= 4             | CSS Compatibility            |
 
-Live demo: http://nine.flashii.net/ (/dev/ is the live development board. In other words; expect it to be broken every now and then)
+Features
+--------
+- Easy Installation and Upgrading
+- Moderation
+- Tripcodes
+- Youtube Embedding
+- Easy language changing and adding
+- Quoting/"greentexting"
+- Multiple styles
+- reCAPTCHAs
+- Password based post deletion
 
-PHP requirement change for 1.9
-===========================
-
-You need at least PHP 5.3 with MySQLi support
+Help
+----
+Although I don't really see when you need help with the board just send me an email (email address is on github profile) or ask about it on http://nine.flashii.net/sup/
