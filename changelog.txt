@@ -1,0 +1,87 @@
+Flashwave's ninechan Changelog
+==============================
+
+Version 1.0  (25-01-2014):
+------------------------------
+First release
+
+Version 1.1  (26-01-2014):
+------------------------------
+Added Description
+MySQL connection settings are now in a separate file along with options to change the description and title of the board
+
+Version 1.2  (26-01-2014):
+------------------------------
+Added ability to temporarily close the board via the config file
+Added CSS
+Added comments to the the config file to make setting it up easier
+Clicking "by" inbetween the title and username of a post will now link to the post
+Replaced <address> with <i>
+
+Version 1.3  (28-01-2014):
+------------------------------
+The newest thread now shows at the top on the index
+Added ability to hide the version in the copyright text on the bottom
+
+Version 1.4  (30-01-2014):
+------------------------------
+Added tripcode support
+Fixed background looping
+
+Version 1.5  (30-01-2014):
+------------------------------
+Instead of dots the threads are now numbered
+Fixed tripcodes not displaying correctly
+Added "noko" and "nonoko"
+Added a "sage" feature which will hide threads after a specified amount of new threads (can be disabled)
+
+Version 1.6  (10-02-2014):
+------------------------------
+Added moderator tools (?v=mod)
+Made the code a bit more "readable"
+Removed unnecessary prints
+Added comments
+Added ability to change the table that's used
+Added a minimum length for title and comment
+Added bantext for changing what appears when a poster gets banned
+Added modpass to set the password for ?v=mod
+Added a reason for closing the board
+Added PHP version checking (minimum required is 5.2)
+
+Version 1.7  (10-02-2014):
+-----------------------------
+Added language setting
+Added ability to disable the board description
+Show version is now disabled by default
+Added Dutch language file
+Fixed ?v=post still working even though a post would be locked
+Moved [Lock thread] to a more appropriate location
+
+Version 1.7.1  (11-02-2014):
+-----------------------------
+The moderator can now see the IP of the posters
+Added Spanish language file (Special thanks to kelopez-cl for making it)
+
+Version 1.8  (22-02-2014):
+-----------------------------
+Added BBcodes
+Added quoting/"greentexting"
+Fixed post length detection
+
+Version 1.9 (06-05-2014):
+----------------------------- // IT'S NOT DEAD!! //
+Minimum required PHP version is 5.3 now, if you haven't updated by now do it.
+Added in-post post linking (e.g. >>41)
+Cleaned up the code
+Removed hash comparing for moderator panel.
+Added style switching
+Improved tripcode system
+Switched database engine over to MySQLi for PHP 5.5+ compatibility
+Added capcodes
+Improved posting system
+Changed the way dates are handled
+Added comments to code
+Added reCAPTCHA support
+Added posting password for deletion
+Password, Name and Email are now stored in cookies
+Added post deletion
