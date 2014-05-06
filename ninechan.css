@@ -34,11 +34,34 @@ legend {
 	border: 1px solid #999;
 	padding: 2px;
 }
-input[type="text"], input[type="password"] {
-	width: 300px;
+input[type="text"] {
+	width: 232px;
 }
-input[type="submit"] {
-	padding: 2px;
+table.postForm > tbody textarea {
+	width: 292px;
+}
+input[type="text"], input[type="password"], table.postForm > tbody textarea {
+	margin: 0px 2px 0px 0px;
+	padding: 2px 4px 3px;
+	border: 1px solid #AAA;
+	outline: medium none;
+	font-family: arial,helvetica,sans-serif;
+	font-size: 10pt;
+}
+table.postForm{
+	border-spacing: 1px;
+}
+table.postForm > tbody > tr {
+	margin: 0px;
+	padding: 0px;
+	font-size: 10pt;
+}
+table.postForm > tbody > tr > td:first-child {
+	padding: -2px;
+	padding-right: 5px;
+	font-weight: bold;
+	text-align: right;
+	width: 100px;
 }
 .trip {
 	font-weight: normal !important;
@@ -56,4 +79,10 @@ input[type="submit"] {
 }
 .quote{
 	color: #789922 !important;
+}
+.admincap{
+	color: #AA0000 !important;
+}
+.modcap{
+	color: #660099 !important;
 }
