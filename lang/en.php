@@ -14,8 +14,11 @@ define('L_TITLE', 'Title'); // Title
 define('L_NAME', 'Name'); // Name
 define('L_EMAIL', 'Email'); // Name
 define('L_COMMENT', 'Comment'); // Comment
-define('L_REQUIRED', 'Required'); // Required
 define('L_SUBMIT', 'Submit'); // Submit
+define('L_VERIFICATION', 'Verification'); // Verification
+define('L_PASSWORD', 'Password'); // Password
+define('L_PASSWORDCONTEXT', 'used for post deletion'); // used for post deletion
+define('L_DELPOST', 'Delete post'); // Delete post
 
 // Messages //
 define('L_BOARD_CLOSED', 'The '.$ninechan['title'].' boards are closed right now.'); // Boards are closed
@@ -23,17 +26,21 @@ define('L_REASON', 'Reason'); // Reason
 define('L_BANNED', 'You have been banned from this board.'); // Text displayed upon being banned
 define('L_EMPTY', 'There are no threads.'); // Text displayed when the board is empty
 define('L_NONEXISTENT', 'Non-existent thread.'); // Text displayed when the board is empty
-define('L_LOCKEDMSG', 'The thread you\'re trying to reply to is locked.'); // Text displayed when the board is empty
+define('L_LOCKEDMSG', 'The thread you\'re trying to reply to is locked.'); // Text displayed when the thread is locked and replying isn't possible
+define('L_LOCKEDMSG_2', 'The thread your post was in is locked and deletion isn\'t possible.'); // Text displayed when the thread is locked and deleting isn't possible
 define('L_POSTED', 'Posted!'); // Text displayed when the post is successful
-define('L_INVALIDTITLE', 'Invalid title!'); // Text displayed when the name field is empty or invalid
-define('L_NOCOMMENT', 'No comment entered!'); // Text displayed when the comment field is empty or invalid
+define('L_INVALIDTITLE', 'Invalid title entered!'); // Text displayed when the name field is empty or invalid
+define('L_NOCOMMENT', 'Invalid comment entered!'); // Text displayed when the comment field is empty or invalid
 define('L_MODTOOLS', 'The moderator tools should now appear next to posts.'); // Mod tools message
 
 // Warnings and errors //
-define('L_PHP_OUTDATED', 'Please upgrade your PHP installation to at least 5.2 or higher.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'Your PHP installation does not support MySQL.'); // SQL connect function does not exist
+define('L_PHP_OUTDATED', 'Please upgrade your PHP installation to at least 5.3 or higher.'); // Outdated PHP version
+define('L_SQL_FUNCTION', 'Your PHP installation does not support MySQLi.'); // SQL connect function does not exist
 define('L_SQL_CONNECT', 'SQL Connection Error'); // Error while connecting to MySQL
-define('L_SQL_DATABASE', 'Database Error'); // Database Error
+define('L_UDB_EXISTS', 'updatedb.php exists, either you didn\'t remove it or it the unlink function failed to.'); // Display if updatedb.php exists
+define('L_INVALIDCAPTCHA', 'Verification failed'); // Message displayed when captcha is wrong
+define('L_DEL_SUCCEED', 'Successfully deleted!'); // Message displayed when post is deleted
+define('L_DEL_FAILED', 'Failed to deleted.'); // Message displayed when post isn't deleted
 
 // Moderator tools //
 define('L_DELETE', 'Delete'); // Delete button
