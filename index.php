@@ -186,7 +186,7 @@ if(!isset($_COOKIE[$ninechan['cookieprefix'].'pass'])) { //-- Check if pass cook
 if($_GET['v']=="index") {
 	print("<h2>".L_THREADS."</h2><h3><a href=?v=post>".L_NEWTHREAD."</a></h3><ol>");
 	if($ninechan['sage']){ //-- Check if thread list limit is set
-		$threads=$sqldb->query("SELECT * FROM ".$sql['table']." WHERE `del`=0 ORDER BY date DESC LIMIT ".$ninechan['sagelimit']);
+		$threads=$sqldb->query("SELECT * FROM ".$sql['table']." WHERE `del`=0 AND `op`=1 ORDER BY date DESC LIMIT ".$ninechan['sagelimit']);
 	} else {
 		$threads=$sqldb->query("SELECT * FROM ".$sql['table']." WHERE `del`=0 ORDER BY date DESC");
 	}
