@@ -1,11 +1,11 @@
 <?php
-//// MySQL Database Connection ////
-$mysql=array();
-$mysql['host']="localhost"; // MySQL Host
-$mysql['user']="root"; // MySQL Username
-$mysql['pass']=""; // MySQL Password
-$mysql['data']="ninechan"; // MySQL Database
-$mysql['table']="posts"; // MySQL Table
+//// SQL Database Connection ////
+$sql=array();
+$sql['host']="localhost"; // MySQL Host
+$sql['user']="root"; // MySQL Username
+$sql['pass']=""; // MySQL Password
+$sql['data']="ninechan"; // MySQL Database
+$sql['table']="posts"; // MySQL Table
 
 //// Board Data ////
 $ninechan=array();
@@ -19,7 +19,8 @@ $ninechan['charset'] = "UTF-8"; // Specify the board character set (e.g. UTF-8, 
 $ninechan['descenable'] = true; // Choose whether a description should be displayed or not
 $ninechan['desc'] = "ninechan best shitty board software"; // Specify the board description
 $ninechan['styleenable'] = true; // Choose whether a CSS Stylesheet should be used or not
-$ninechan['style'] = "ninechan.css"; // Specify the CSS (can be external)
+$ninechan['defaultstyle'] = "ninechan.css"; // Select the default stylesheet
+$ninechan['styles'] = array("ninechan.css","ninechan2.css"); // Specify the CSS stylesheets (can be external)
 $ninechan['showversion'] = false; // Specify whether the version number is shown or not
 $ninechan['sage'] = false; // Specify whether the threads should "disappear" after a certain amount of new threads
 $ninechan['sagelimit'] = 20; // If ['sage'] is set to true, how many threads should be displayed
