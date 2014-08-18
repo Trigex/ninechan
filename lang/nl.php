@@ -23,7 +23,8 @@ define('L_DELPOST', 'Verwijder post'); // Delete post
 // Messages //
 define('L_BOARD_CLOSED', 'Het '.$ninechan['title'].' boord is gesloten op het moment.'); // Boards are closed
 define('L_REASON', 'Reden'); // Reason
-define('L_BANNED', 'U bent verbant van dit boord.'); // Text displayed upon being banned
+define('L_BANNED', 'U bent verbannen van dit boord.'); // Text displayed upon being banned
+define('L_POSTBANNED', '(GEBRUIKER WAS GEBAND VOOR DEZE POST)'); // Text displayed under banned post
 define('L_EMPTY', 'Er zijn geen threads.'); // Text displayed when the board is empty
 define('L_NONEXISTENT', 'Niet bestaande thread.'); // Text displayed when the board is empty
 define('L_LOCKEDMSG', 'De thread waarop u probeert te reageren is gesloten.'); // Text displayed when the board is empty
