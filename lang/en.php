@@ -31,10 +31,10 @@ define('L_LOCKEDMSG', 'The thread you\'re trying to reply to is locked.'); // Te
 define('L_LOCKEDMSG_2', 'The thread your post was in is locked and deletion isn\'t possible.'); // Text displayed when the thread is locked and deleting isn't possible
 define('L_POSTED', 'Posted!'); // Text displayed when the post is successful
 define('L_MODTOOLS', 'The moderator tools should now appear next to posts.'); // Mod tools message
-define('L_TITLETOOSHORT', 'The given title is too short.') // The given title is too short.
-define('L_TITLETOOLONG', 'The given title is too long.') // The given title is too long.
-define('L_COMMENTTOOSHORT', 'The given comment is too short.') // The given comment is too short.
-define('L_COMMENTTOOLONG', 'The given comment is too long.') // The given comment is too long.
+define('L_TITLETOOSHORT', 'The given title is too short.'); // The given title is too short.
+define('L_TITLETOOLONG', 'The given title is too long.'); // The given title is too long.
+define('L_COMMENTTOOSHORT', 'The given comment is too short.'); // The given comment is too short.
+define('L_COMMENTTOOLONG', 'The given comment is too long.'); // The given comment is too long.
 
 // Warnings and errors //
 define('L_PHP_OUTDATED', 'Please upgrade your PHP installation to at least 5.3 or higher.'); // Outdated PHP version
