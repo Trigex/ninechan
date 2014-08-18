@@ -24,6 +24,7 @@ define('L_DELPOST', 'Delete post'); // Delete post
 define('L_BOARD_CLOSED', 'The '.$ninechan['title'].' boards are closed right now.'); // Boards are closed
 define('L_REASON', 'Reason'); // Reason
 define('L_BANNED', 'You have been banned from this board.'); // Text displayed upon being banned
+define('L_POSTBANNED', '(USER WAS BANNED FOR THIS POST)'); // Text displayed under banned post
 define('L_EMPTY', 'There are no threads.'); // Text displayed when the board is empty
 define('L_NONEXISTENT', 'Non-existent thread.'); // Text displayed when the board is empty
 define('L_LOCKEDMSG', 'The thread you\'re trying to reply to is locked.'); // Text displayed when the thread is locked and replying isn't possible
@@ -37,7 +38,7 @@ define('L_MODTOOLS', 'The moderator tools should now appear next to posts.'); //
 define('L_PHP_OUTDATED', 'Please upgrade your PHP installation to at least 5.3 or higher.'); // Outdated PHP version
 define('L_SQL_FUNCTION', 'Your PHP installation does not support MySQLi.'); // SQL connect function does not exist
 define('L_SQL_CONNECT', 'SQL Connection Error'); // Error while connecting to MySQL
-define('L_UDB_EXISTS', 'updatedb.php exists, either you didn\'t remove it or it the unlink function failed to.'); // Display if updatedb.php exists
+define('L_UDB_EXISTS', 'updatedb.php exists, either you didn\'t remove it or the unlink function failed to.'); // Display if updatedb.php exists
 define('L_INVALIDCAPTCHA', 'Verification failed'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', 'Successfully deleted!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'Failed to deleted.'); // Message displayed when post isn't deleted
