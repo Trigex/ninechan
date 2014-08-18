@@ -68,8 +68,8 @@ Added BBcodes
 Added quoting/"greentexting"
 Fixed post length detection
 
-Version 1.9 (06-05-2014):
------------------------------ // IT'S NOT DEAD!! //
+Version 1.9 (07-05-2014):
+-----------------------------
 Minimum required PHP version is 5.3 now, if you haven't updated by now do it.
 Added in-post post linking (e.g. >>41)
 Cleaned up the code
@@ -86,3 +86,8 @@ Added posting password for deletion
 Password, Name and Email are now stored in cookies
 Added post deletion
 Added Option to only make moderators and or administrators fully or name wise anonymous
+
+Version 1.10 (19-08-2014):
+-----------------------------
+Last feature update for ninechan 1.x, focus will now entirely go to Satoko and ninechan 2.x
+Cleaned and "fixed" the entire index.
