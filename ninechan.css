@@ -2,6 +2,7 @@ html, body {
 	font-family: Verdana, Helvetica, sans-serif;
 	margin: 0px;
 	padding: 0px;
+	min-height: 100%;
 }
 body {
 	background: linear-gradient(to bottom, #9DAAD9, #FFFFFF) repeat-x #FFFFFF;
