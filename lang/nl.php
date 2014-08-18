@@ -31,10 +31,10 @@ define('L_LOCKEDMSG', 'De thread waarop u probeert te reageren is gesloten.'); /
 define('L_LOCKEDMSG_2', 'De thread waarin uw post was is gelockt en u kunt uw post niet verwijderen.'); // Text displayed when the thread is locked and deleting isn't possible
 define('L_POSTED', 'Gepost!'); // Text displayed when the post is successful
 define('L_MODTOOLS', 'De moderator hulp middelen zouden nu bij de posts staan.'); // Mod tools message
-define('L_TITLETOOSHORT', 'De gegeven titel is te kort.') // The given title is too short.
-define('L_TITLETOOLONG', 'De gegeven titel is te lang.') // The given title is too long.
-define('L_COMMENTTOOSHORT', 'Het gegeven bericht is te kort.') // The given comment is too short.
-define('L_COMMENTTOOLONG', 'Het gegeven bericht is te lang.') // The given comment is too long.
+define('L_TITLETOOSHORT', 'De gegeven titel is te kort.'); // The given title is too short.
+define('L_TITLETOOLONG', 'De gegeven titel is te lang.'); // The given title is too long.
+define('L_COMMENTTOOSHORT', 'Het gegeven bericht is te kort.'); // The given comment is too short.
+define('L_COMMENTTOOLONG', 'Het gegeven bericht is te lang.'); // The given comment is too long.
 
 // Warnings and errors //
 define('L_PHP_OUTDATED', 'Upgrade uw PHP versie naar ten minste 5.3.'); // Outdated PHP version
