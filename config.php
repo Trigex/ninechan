@@ -11,6 +11,7 @@ $sql['table']					= "nine";					// SQL Table
 $ninechan=array();
 $ninechan['cookieprefix']		= "nine_";									// Cookie Prefix (for if you have multiple boards and you want to keep the cookies apart).
 $ninechan['cookiepath']			= "/";										// Path on the server for the cookies
+$ninechan['cookielifetime']		= 604800;									// The time cookies should live
 $ninechan['exposeerrors']		= false;									// Set if errors should be displayed
 $ninechan['lang']				= "en";										// Set the language. Must match filename from file in /lang/ folder (excluding .php).
 $ninechan['closed']				= false;									// Define if the board should be open(false) or closed(true)
