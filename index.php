@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <?php
-// Ninechan v10.1
+// Ninechan v1.10.2
 // This is the last feature update for ninechan
 // Any updates after this will be for security (but only if urgent)
 // A Ninechan v2.0 converter (for your config and database) will be available as soon as it's ready
 // Thanks for using/coping with my (shitty) board script :)
+// Except there was another update >.>
 
 // Configuration files
 require 'config.php'; // Include Configuration
@@ -14,26 +15,23 @@ include 'lang/'.$ninechan['lang'].'.php'; // Include Language file
 error_reporting($ninechan['exposeerrors'] ? -1 : 0);
 
 // Check dependencies
-if(version_compare(phpversion(), '5.3.0', '<')) { // PHP 5.3 or higher
-	print L_PHP_OUTDATED;
-	exit;
-}
-if(!extension_loaded('mysqli')) { // MySQL Improved
-	print L_SQL_FUNCTION;
-	exit;
-}
-if(file_exists("updatedb.php")) { // Ninechan Updater
-	print L_UDB_EXISTS;
-	exit;
-}
+if(version_compare(phpversion(), '5.3.0', '<')) // PHP 5.3 or higher
+	die(L_PHP_OUTDATED);
+
+if(!extension_loaded('mysqli')) // MySQL Improved
+	die(L_SQL_FUNCTION);
+
+/*if(file_exists("updatedb.php")) // Ninechan Updater
+	die(L_UDB_EXISTS);
+*/
 
 // Connect to SQL
 $sqldb = new mysqli($sql['host'], $sql['user'], $sql['pass'], $sql['data']);
 
 if($sqldb->connect_errno) { // Catch connection error
-	print L_SQL_CONNECT;
-	exit;
+	die(L_SQL_CONNECT);
 }
+
 // Initialise Database
 $sqldb->query("CREATE TABLE IF NOT EXISTS `".$sql['data']."`.`".$sql['table']."` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`trip` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`password` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,`locked` int(11) NOT NULL,`ban` int(11) NOT NULL,`del` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;"); //-- Create database table when it doesn't exist
 
@@ -86,38 +84,26 @@ function generatePassword() {
 function banPost($id, $ban) {
 	global $sql, $sqldb;
 	
-	if($ban)
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `ban`=1 WHERE `id`=".$id);
-	else
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `ban`=0 WHERE `id`=".$id);
+	$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `ban`='".($ban ? '1' : '0')."' WHERE `id`='".$id."'");
 }
 
 // Removing a post
 function delPost($id, $del) {
 	global $sql, $sqldb;
 	
-	if($del)
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `del`=1 WHERE `id`=".$id);
-	else
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `del`=0 WHERE `id`=".$id);
+	$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `del`='".($del ? '1' : '0')."' WHERE `id`='".$id."'");
 }
 // Removing every post in the thread
 function pruneThread($id, $prune) {
 	global $sql, $sqldb;
 	
-	if($prune)
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `del`=1 WHERE `tid`=".$id);
-	else
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `del`=0 WHERE `tid`=".$id);
+	$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `del`='".($prune ? '1' : '0')."' WHERE `tid`='".$id."'");
 }
 // Locking a thread
 function lockThread($id, $lock) {
 	global $sql, $sqldb;
 	
-	if($lock)
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `locked`=1 WHERE `tid`=".$id);
-	else
-		$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `locked`=0 WHERE `tid`=".$id);
+	$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `locked`='".($lock ? '1' : '0')."' WHERE `tid`='".$id."'");
 }
 
 // reCAPTCHA
@@ -131,28 +117,24 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=<?=$ninechan['charset'];?>" />
-		<title><?=$ninechan['title'];?></title>
-		<?php
-		if($ninechan['desc'])
-			print '<meta name="description" content="'.$ninechan['desc'].'" />'."\r\n";
-		?>
+		<title><?=$ninechan['title'];?></title><?=($ninechan['desc'] ? '<meta name="description" content="'.$ninechan['desc'].'" />' : null);?>
 		<script type="text/javascript">
 		/// Apologies for my shitty Javascript
 		// Function to write to a cookie
 		function setCookie(name, content, expire) {
 			if(expire=="forever"){var expire = 60*60*24*365*99;}
 			if(expire=="default"){var expire = 60*60*24*7;}
-			document.cookie='<?php print($ninechan['cookieprefix']); ?>'+name+'='+content+';max-age='+expire;
+			document.cookie='<?=$ninechan['cookieprefix'];?>'+name+'='+content+';max-age='+expire;
 		}
 		
 		// Function to delete a cookie
 		function delCookie(name) {
-			document.cookie='<?php print($ninechan['cookieprefix']); ?>'+name+'=;max-age=1;path=/'
+			document.cookie='<?=$ninechan['cookieprefix'];?>'+name+'=;max-age=1;path=/'
 		}
 		
 		// Function to get data from a cookie
 		function getCookie(name) {
-			return (name = new RegExp('(?:^|;\\s*)' + ('' + '<?php print($ninechan['cookieprefix']); ?>'+name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
+			return (name = new RegExp('(?:^|;\\s*)' + ('' + '<?=$ninechan['cookieprefix'];?>'+name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
 		}
 		
 		// Get main style
@@ -206,7 +188,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		</script>
 		<?php
 		if($ninechan['styles']) { // Check if styles are enabled
-			foreach($ninechan['styles'] as $styleUrl => $styleName){		// Get styles from array
+			foreach($ninechan['styles'] as $styleUrl => $styleName) {		// Get styles from array
 				reset($ninechan['styles']);									// Reset Array
 				$mainStyle = key($ninechan['styles']);						// Get first entry
 				$alternate = ($styleUrl == $mainStyle) ? '' : 'alternate ';	// Append alternate to the rel of the non-main styles
@@ -224,11 +206,14 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 			print L_BOARD_CLOSED."<br /><i>".L_REASON.": ".$ninechan['closedreason']."</i>";
 			exit;
 		}
-		$bancheck = $sqldb->query("SELECT * FROM ".$sql['table']." WHERE ip='".base64_encode($_SERVER['REMOTE_ADDR'])."'"); // Check if poster IP is banned
-		while($row = $bancheck->fetch_array(MYSQLI_ASSOC)){if($row['ban']){die(L_BANNED);}}
-		if(!isset($_COOKIE[$ninechan['cookieprefix'].'pass'])) { // Check if pass cookie is set if not set it
-			setcookie($ninechan['cookieprefix']."pass",generatePassword(),time()+604800,"/",$_SERVER['SERVER_NAME']); // Generate random password
-		}
+		
+		$banCheck = ($sqldb->query("SELECT * FROM `".$sql['data']."`.`".$sql['table']."` WHERE `ip`='".base64_encode($_SERVER['REMOTE_ADDR'])."' AND `ban`='1'")->num_rows ? true : false); // Check if poster IP is banned, using num_rows because COUNT(*) didn't want to work or I did something wrong
+		if($banCheck)
+			print '<div class="banmsg">'.L_USERBANNEDMSG.'</div><hr />';
+		
+		if(!isset($_COOKIE[$ninechan['cookieprefix'].'pass'])) // Check if pass cookie is set if not set it
+			setcookie($ninechan['cookieprefix']."pass", generatePassword(), time() + $ninechan['cookielifetime'], "/", $_SERVER['SERVER_NAME']); // Generate random password
+		
 		if(isset($_GET['v'])) {
 			switch($_GET['v']) {
 				// Main index
@@ -380,6 +365,11 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 				
 				// Posting
 				case 'post':
+					if($banCheck) {
+						print '<h2>'.L_USERBANNED.'</h2>';
+						break;
+					}
+					
 					$postData = array(); // Assign array to variable so we can store things in it later
 					
 					print '<form method="post" action="?v=submit">';					
@@ -432,6 +422,11 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 				
 				// Submitting posts
 				case 'submit':
+					if($banCheck) {
+						print '<h2>'.L_USERBANNED.'</h2>';
+						break;
+					}
+					
 					$submitData = array(); // Assign array to variable so we can store things in it later
 					
 					// Check ReCAPTCHA
@@ -448,7 +443,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					$submitData['title']	= removeSpecialChars($_POST['title']);
 					$submitData['content']	= removeSpecialChars($_POST['content']);
 					$submitData['name']		= removeSpecialChars($_POST['name']);
-					$submitData['nameNT']	= strstr($submitData['name'], "#", true);
+					$submitData['nameNT']	= (strlen(strstr($submitData['name'], "#", true)) ? strstr($submitData['name'], "#", true) : $submitData['name']);
 					$submitData['trip']		= parseTrip($_POST['name']);
 					$submitData['email']	= ($_POST['email'] == 'noko' ? null : removeSpecialChars($_POST['email']));
 					$submitData['date']		= time();
@@ -459,9 +454,9 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					$submitData['noredir']	= ($submitData['email'] == 'noko' ? true : false);
 
 					// Assign cookies
-					setcookie($ninechan['cookieprefix']."name", $submitData['name'], time()+604800, $ninechan['cookiepath'], $_SERVER['SERVER_NAME']);
-					setcookie($ninechan['cookieprefix']."email", $submitData['email'], time()+604800, $ninechan['cookiepath'], $_SERVER['SERVER_NAME']); 
-					setcookie($ninechan['cookieprefix']."pass", $submitData['password'], time()+604800, $ninechan['cookiepath'], $_SERVER['SERVER_NAME']); 
+					setcookie($ninechan['cookieprefix']."name", $submitData['name'], time() + $ninechan['cookielifetime'], $ninechan['cookiepath'], $_SERVER['SERVER_NAME']);
+					setcookie($ninechan['cookieprefix']."email", $submitData['email'], time() + $ninechan['cookielifetime'], $ninechan['cookiepath'], $_SERVER['SERVER_NAME']); 
+					setcookie($ninechan['cookieprefix']."pass", $submitData['password'], time() + $ninechan['cookielifetime'], $ninechan['cookiepath'], $_SERVER['SERVER_NAME']); 
 					
 					// Check if title is valid
 					if(strlen($submitData['title']) <= $ninechan['titleminlength']) { // Check if too short
@@ -495,6 +490,11 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 				break;
 				
 				case 'del':
+					if($banCheck) {
+						print '<h2>'.L_USERBANNED.'</h2>';
+						break;
+					}
+					
 					$deletionData = array(); // Assign array to variable so we can store things in it later
 					
 					if(isset($_POST['id'])) {
@@ -561,6 +561,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 							header('Location: ?v=mod'); // ...and redirect to ?v=mod
 							print '<meta http-equiv="refresh" content="0; url=?v=mod" />'; // fallback
 						}
+						
 						print '<h2>'.L_MODLOGOUT.'</h2>'; // Page title
 						
 						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?v=mod">'; // Print logout form
@@ -568,46 +569,49 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 						print '<input type="submit" value="'.L_LOGOUT.'" name="modkill" />';
 						print '</form>';
 						
-						if(isset($_GET['ban'])&&(isset($_GET['id']))&&(isset($_GET['t']))) { // Ban handler
-							if($_GET['ban']=="true"){
-								banPost($_GET['id'],true);
-							} else {
-								banPost($_GET['id'],false);
-							}
+						if(isset($_GET['ban']) && isset($_GET['id']) && isset($_GET['t'])) { // Ban handler
+							if($_GET['ban'] == "true")
+								banPost($_GET['id'], true);
+							else
+								banPost($_GET['id'], false);
+
 							header('Location: ?v=thread&t='.$_GET['t']);
 							print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['t'].'" />'; // fallback
 						}
-						if((isset($_GET['del']))&&(isset($_GET['id']))) { // Deletion handler
-							if($_GET['del']=="purge"){
-								pruneThread($_GET['id'],true);
+						if(isset($_GET['del']) && isset($_GET['id'])) { // Deletion handler
+							if($_GET['del'] == "purge") {
+								pruneThread($_GET['id'], true);
+								
 								header('Location: ?v=index');
 								print '<meta http-equiv="refresh" content="0; url=?v=index" />'; // fallback
 							} else {
-								if($_GET['del']=="true"){
-									delPost($_GET['id'],true);
-								}else{
-									delPost($_GET['id'],false);
-								}
+								if($_GET['del'] == "true")
+									delPost($_GET['id'], true);
+								else
+									delPost($_GET['id'], false);
+
 								header('Location: ?v=thread&t='.$_GET['t']);
 								print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['t'].'" />'; // fallback
 							}
 						}
-						if((isset($_GET['lock']))&&(isset($_GET['id']))){ // Lock handler
-							if($_GET['lock']=="true"){
-								lockThread($_GET['id'],true);
-							}else{
-								lockThread($_GET['id'],false);
-							}
+						if(isset($_GET['lock']) && isset($_GET['id'])) { // Lock handler
+							if($_GET['lock'] == "true")
+								lockThread($_GET['id'], true);
+							else
+								lockThread($_GET['id'], false);
+
 							header('Location: ?v=thread&t='.$_GET['id']);
 							print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['id'].'" />'; // fallback
 						}
 					} else { // Else display login screen
-						if(isset($_POST['modpass'])){
-							if($_POST['modpass']==$ninechan['modpass']){
-								$_SESSION['mod']=$ninechan['modpass'];
-							}
+						if(isset($_POST['modpass'])) {
+							if($_POST['modpass'] == $ninechan['modpass'])
+								$_SESSION['mod'] = $ninechan['modpass'];
+
 							header('Location: ?v=mod');
+							print '<meta http-equiv="refresh" content="0; url=?v=mod" />'; // fallback
 						}
+						
 						print '<h2>'.L_MODLOGIN.'</h2>';
 						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?v=mod">';
 						print '<input type="password" name="modpass" /><input type="submit" value="'.L_LOGIN.'" />';
@@ -627,13 +631,13 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		}
 		if($ninechan['styles']) { // Check if styles are enabled
 			print '<h6>';
-			foreach($ninechan['styles'] as $styleUrl => $styleName){ // Get styles from array
+			foreach($ninechan['styles'] as $styleUrl => $styleName) { // Get styles from array
 				print '[<a href="javascript:;" onclick="setStyle(\''.$styleName.'\');">'.$styleName.'</a>] '; // List every style
 			}
 			print '</h6>';
 		}
 		?>
 		<!-- Please retain the full copyright notice below including the link to flashii.net. This not only gives respect to the amount of time given freely by the developer but also helps build interest, traffic and use of ninechan. -->
-		<h6><a href="http://nine.flashii.net/" target="_blank">ninechan</a> <?=($ninechan['showversion'] ? '1.10.1 ' : null);?>&copy; <a href="http://flashii.net/" target="_blank">Flashwave</a></h6>
+		<h6><a href="http://nine.flashii.net/" target="_blank">ninechan</a> <?=($ninechan['showversion'] ? '1.10.2 ' : null);?>&copy; <a href="http://flashii.net/" target="_blank">Flashwave</a></h6>
 	</body>
 </html>
