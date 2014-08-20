@@ -21,9 +21,9 @@ define('L_PASSWORDCONTEXT', 'gebruikt voor post verwijdering'); // used for post
 define('L_DELPOST', 'Verwijder post'); // Delete post
 
 // Messages //
-define('L_BOARD_CLOSED', 'Het '.$ninechan['title'].' boord is gesloten op het moment.'); // Boards are closed
+define('L_BOARD_CLOSED', 'Het '.$ninechan['title'].' forum is gesloten op het moment.'); // Boards are closed
 define('L_REASON', 'Reden'); // Reason
-define('L_BANNED', 'U bent verbannen van dit boord.'); // Text displayed upon being banned
+define('L_BANNED', 'U bent verbannen van dit forum.'); // Text displayed upon being banned
 define('L_POSTBANNED', '(GEBRUIKER WAS GEBAND VOOR DEZE POST)'); // Text displayed under banned post
 define('L_EMPTY', 'Er zijn geen threads.'); // Text displayed when the board is empty
 define('L_NONEXISTENT', 'Niet bestaande thread.'); // Text displayed when the board is empty
@@ -44,6 +44,8 @@ define('L_UDB_EXISTS', 'updatedb.php bestaat, of u heeft het niet verwijdered of
 define('L_INVALIDCAPTCHA', 'Verification mislukt'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', 'Successvol verwijdert!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'Verwijderen mislukt.'); // Message displayed when post isn't deleted
+define('L_USERBANNEDMSG', 'Je bent verbannen van posten op dit forum'); // Message displayed on top of the board when IP is banned
+define('L_USERBANNED', 'Kan de actie niet voltooien omdat je IP verbannen.'); // Message displayed when trying to access a restricted page
 
 // Moderator tools //
 define('L_DELETE', 'Verwijder'); // Delete button
