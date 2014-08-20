@@ -10,6 +10,7 @@ Requirements
 | ---------------------- | ---------------------------- |
 | PHP >= 5.3             | Enabled JavaScript           |
 | MySQL >= 4             | CSS Compatibility            |
+| Short PHP Tags         | Cookies enabled              |
 
 Features
 --------
