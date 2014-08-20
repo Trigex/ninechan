@@ -44,6 +44,8 @@ define('L_UDB_EXISTS', 'updatedb.php exists, either you didn\'t remove it or the
 define('L_INVALIDCAPTCHA', 'Verification failed'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', 'Successfully deleted!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'Failed to deleted.'); // Message displayed when post isn't deleted
+define('L_USERBANNEDMSG', 'You are banned from posting on this board.'); // Message displayed on top of the board when IP is banned
+define('L_USERBANNED', 'Couldn\'t complete this action because IP is banned.'); // Message displayed when trying to access a restricted page
 
 // Moderator tools //
 define('L_DELETE', 'Delete'); // Delete button
