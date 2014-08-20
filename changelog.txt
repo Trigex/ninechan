@@ -91,3 +91,12 @@ Version 1.10 (19-08-2014):
 -----------------------------
 Last feature update for ninechan 1.x, focus will now entirely go to Satoko and ninechan 2.x
 Cleaned and "fixed" the entire index.
+
+Version 1.10.1 (19-08-2014):
+-----------------------------
+Fixed usernames not showing up correctly
+
+Version 1.10.2 (20-08-2014):
+-----------------------------
+Fixed username not being stored when tripcode isn't used
+Changed ban handling
