@@ -49,7 +49,7 @@ input[type="text"], input[type="password"], table.postForm > tbody textarea {
 	font-family: arial,helvetica,sans-serif;
 	font-size: 10pt;
 }
-table.postForm{
+table.postForm {
 	border-spacing: 1px;
 }
 table.postForm > tbody > tr {
@@ -71,6 +71,10 @@ table.postForm > tbody > tr > td:first-child {
 .ban {
 	color: #F00;
 }
+.banmsg {
+	background: #C00;
+	padding: 5px;
+}
 .spoiler {
 	background: black;
 	color: black;
@@ -78,12 +82,12 @@ table.postForm > tbody > tr > td:first-child {
 .spoiler:hover {
 	color: white !important;
 }
-.quote{
+.quote {
 	color: #789922 !important;
 }
-.admincap{
+.admincap {
 	color: #AA0000 !important;
 }
-.modcap{
+.modcap {
 	color: #660099 !important;
 }
