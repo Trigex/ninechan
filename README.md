@@ -1,7 +1,7 @@
 ninechan
 ========
 
-A simple text based discussion board of which you can find the demo, live development, suggestions and support boards on http://nine.flashii.net/
+A simple text based discussion board of which you can find the demo, live development, suggestions and support boards on http://nine.flash.moe/
 
 Requirements
 ------------
