@@ -26,4 +26,4 @@ Features
 
 Help
 ----
-Although I don't really see when you need help with the board just send me an email (email address is on github profile) or ask about it on http://nine.flashii.net/sup/
+Although I don't really see when you need help with the board just send me an email (email address is on github profile) or ask about it on http://ninechan.flash.moe/sup/
