@@ -1,4 +1,5 @@
-﻿<?php
+<?php
+die('Language file outdated, if anyone wants to fix this make a pull request with the fixed stuff and removed this die line.');
 //// Ninechan Official Spanish Language File ////
 // Board //
 define('L_THREADS', 'Hilos'); // Threads
