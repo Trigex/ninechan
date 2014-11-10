@@ -27,7 +27,7 @@ define('L_DELPOST', 'Usunąć Post'); // Delete post
 // Messages //
 define('L_BOARD_CLOSED', $ninechan['title'].' forumy są teraz zamknięte.'); // Boards are closed
 define('L_REASON', 'Powód'); // Reason
-define('L_BANNED', 'Ty zostałeś wyrzucony z tego forum.'); // Text displayed upon being banned
+define('L_BANNED', 'Ty zostałeś zbanowany z tego forum.'); // Text displayed upon being banned
 define('L_POSTBANNED', '(UŻYTKOWNIK ZOSTAŁ ZBANOWANY ZA TEN POST)'); // Text displayed under banned post
 define('L_EMPTY', 'Istnieją nie ma wątków.'); // Text displayed when the board is empty
 define('L_NONEXISTENT', 'Wątek nie istnieje.'); // Text displayed when the board is empty
