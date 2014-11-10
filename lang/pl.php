@@ -22,7 +22,7 @@ define('L_SUBMIT', 'Prześlij'); // Submit
 define('L_VERIFICATION', 'Weryfikacja'); // Verification
 define('L_PASSWORD', 'Hasło'); // Password
 define('L_PASSWORDCONTEXT', 'Służy do usuwania postów'); // used for post deletion
-define('L_DELPOST', 'Usunąć Post'); // Delete post
+define('L_DELPOST', 'Usun Post'); // Delete post
 
 // Messages //
 define('L_BOARD_CLOSED', $ninechan['title'].' forumy są teraz zamknięte.'); // Boards are closed
