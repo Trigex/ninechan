@@ -638,6 +638,6 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		}
 		?>
 		<!-- Please retain the full copyright notice below including the link to flashii.net. This not only gives respect to the amount of time given freely by the developer but also helps build interest, traffic and use of ninechan. -->
-		<h6><a href="http://ninechan.flash.moe/" target="_blank">ninechan</a> <?=($ninechan['showversion'] ? '1.10.2c ' : null);?>&copy; <a href="http://flash.moe/" target="_blank">Flashwave</a></h6>
+		<h6><a href="http://ninechan.flash.moe/" target="_blank">ninechan</a> <?=($ninechan['showversion'] ? '1.10.2d ' : null);?>&copy; <a href="http://flash.moe/" target="_blank">Flashwave</a></h6>
 	</body>
 </html>
