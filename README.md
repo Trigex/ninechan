@@ -3,7 +3,7 @@ ninechan
 
 A simple text based discussion board of which you can find the demo, live development, suggestions and support boards on http://ninechan.flash.moe/
 
-The version on GitHub is __usually__ in sync with the one on the development board.
+The version on GitHub is _usually_ in sync with the one on the development board.
 
 Requirements
 ------------
