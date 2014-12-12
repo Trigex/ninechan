@@ -3,7 +3,7 @@
 $sql = array();
 $ninechan = array();
 
-// Database Connection
+// Database Connection Settings
 $sql['dsn']						= "mysql:host=localhost; dbname=ninechan;";	// PDO DSN
 $sql['user']					= "root";									// Database Username
 $sql['pass']					= "";										// Database Password
