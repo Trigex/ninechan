@@ -94,10 +94,34 @@ Cleaned and "fixed" the entire index.
 
 Version 1.10.1 (19-08-2014):
 -----------------------------
-Fixed usernames not showing up correctly
+Fixed e-mail link not showing when e-mail address is set in the database.
 
-Version 1.10.2 (20-08-2014):
+Version 1.10.2a (20-08-2014):
 -----------------------------
-Fixed username not being stored when tripcode isn't used
-Changed ban handling
+More code cleaning.
+Fixed username not being stored when tripcode isn't used.
+Changed ban handling.
 Added option for cookie age
+
+Version 1.10.2b (10-09-2014):
+-----------------------------
+Changed flashii.net links to flash.moe.
+
+Version 1.10.2c (10-11-2014):
+-----------------------------
+Polish language file added (thanks to kamil0).
+Grammar fix in english language file.
+
+Version 1.10.2d (27-11-2014):
+-----------------------------
+German language file added (thanks to berserkingyadis)
+
+Version 1.10.2e (06-12-2014):
+-----------------------------
+Indonesian language file added (thanks to Flappyzor)
+
+Version 1.11alpha1 (06-12-2014):
+------------------------------
+Made configuration variables more overviewable (WILL break things if you don't update your configuration file).
+Put version number in a define at the top of the file to make changing it easier in case I decide to use it elsewhere.
+Why was the doctype statement all the way on the top above the PHP code?

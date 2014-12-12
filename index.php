@@ -1,13 +1,13 @@
-<!DOCTYPE html>
 <?php
-// Ninechan v1.10.2
+// ninechan 1.11alpha1
+define('N_VERSION', '1.11alpha1');
 
 // Configuration files
 require 'config.php'; // Include Configuration
-include 'lang/'.$ninechan['lang'].'.php'; // Include Language file
+include 'lang/' . $ninechan['lang'] . '.php'; // Include language file
 
 // Error Reporting
-error_reporting($ninechan['exposeerrors'] ? -1 : 0);
+error_reporting($ninechan['exposeErrors'] ? -1 : 0);
 
 // Check dependencies
 if(version_compare(phpversion(), '5.3.0', '<')) // PHP 5.3 or higher
@@ -16,9 +16,6 @@ if(version_compare(phpversion(), '5.3.0', '<')) // PHP 5.3 or higher
 if(!extension_loaded('mysqli')) // MySQL Improved
 	die(L_SQL_FUNCTION);
 
-/*if(file_exists("updatedb.php")) // Ninechan Updater
-	die(L_UDB_EXISTS);
-*/
 
 // Connect to SQL
 $sqldb = new mysqli($sql['host'], $sql['user'], $sql['pass'], $sql['data']);
@@ -28,7 +25,7 @@ if($sqldb->connect_errno) { // Catch connection error
 }
 
 // Initialise Database
-$sqldb->query("CREATE TABLE IF NOT EXISTS `".$sql['data']."`.`".$sql['table']."` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`trip` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`password` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,`locked` int(11) NOT NULL,`ban` int(11) NOT NULL,`del` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1;"); //-- Create database table when it doesn't exist
+$sqldb->query("CREATE TABLE IF NOT EXISTS `".$sql['data']."`.`".$sql['table']."` (`id` int(11) NOT NULL AUTO_INCREMENT,`title` text NOT NULL,`name` text NOT NULL,`trip` text NOT NULL,`email` text NOT NULL,`date` text NOT NULL,`content` text NOT NULL,`password` text NOT NULL,`ip` text NOT NULL,`op` int(11) NOT NULL,`tid` int(11) NOT NULL,`locked` int(11) NOT NULL,`ban` int(11) NOT NULL,`del` int(11) NOT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT charset=latin1;"); //-- Create database table when it doesn't exist
 
 // Functions
 // Cleaning posts
@@ -101,14 +98,15 @@ function lockThread($id, $lock) {
 	$sqldb->query("UPDATE `".$sql['data']."`.`".$sql['table']."` SET `locked`='".($lock ? '1' : '0')."' WHERE `tid`='".$id."'");
 }
 
-// reCAPTCHA
-if($ninechan['recaptcha'])
-	require $ninechan['recaptchalib'];
+// reCaptcha
+if($ninechan['reCaptcha'])
+	require $ninechan['reCaptchaLib'];
 
 // Session
 session_start();			// Start a session
 $auth = @$_SESSION['mod'];	// Set an alias for mod
 ?>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=<?=$ninechan['charset'];?>" />
@@ -119,17 +117,17 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		function setCookie(name, content, expire) {
 			if(expire=="forever"){var expire = 60*60*24*365*99;}
 			if(expire=="default"){var expire = 60*60*24*7;}
-			document.cookie='<?=$ninechan['cookieprefix'];?>'+name+'='+content+';max-age='+expire;
+			document.cookie='<?=$ninechan['cookiePrefix'];?>'+name+'='+content+';max-age='+expire;
 		}
 		
 		// Function to delete a cookie
 		function delCookie(name) {
-			document.cookie='<?=$ninechan['cookieprefix'];?>'+name+'=;max-age=1;path=/'
+			document.cookie='<?=$ninechan['cookiePrefix'];?>'+name+'=;max-age=1;path=/'
 		}
 		
 		// Function to get data from a cookie
 		function getCookie(name) {
-			return (name = new RegExp('(?:^|;\\s*)' + ('' + '<?=$ninechan['cookieprefix'];?>'+name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
+			return (name = new RegExp('(?:^|;\\s*)' + ('' + '<?=$ninechan['cookiePrefix'];?>'+name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
 		}
 		
 		// Get main style
@@ -198,7 +196,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		<hr />
 		<?php
 		if($ninechan['closed']) { // Exit if board is set as closed in the config file
-			print L_BOARD_CLOSED."<br /><i>".L_REASON.": ".$ninechan['closedreason']."</i>";
+			print L_BOARD_CLOSED."<br /><i>".L_REASON.": ".$ninechan['closedReason']."</i>";
 			exit;
 		}
 		
@@ -206,8 +204,8 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		if($banCheck)
 			print '<div class="banmsg">'.L_USERBANNEDMSG.'</div><hr />';
 		
-		if(!isset($_COOKIE[$ninechan['cookieprefix'].'pass'])) // Check if pass cookie is set if not set it
-			setcookie($ninechan['cookieprefix']."pass", generatePassword(), time() + $ninechan['cookielifetime'], "/", $_SERVER['SERVER_NAME']); // Generate random password
+		if(!isset($_COOKIE[$ninechan['cookiePrefix'].'pass'])) // Check if pass cookie is set if not set it
+			setcookie($ninechan['cookiePrefix']."pass", generatePassword(), time() + $ninechan['cookieLifetime'], "/", $_SERVER['SERVER_NAME']); // Generate random password
 		
 		if(isset($_GET['v'])) {
 			switch($_GET['v']) {
@@ -217,7 +215,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					print '<h3><a href="?v=post">'.L_NEWTHREAD.'</a></h3>'; // New thread link
 					
 					// Query to get OP posts
-					$getThreads = $sqldb->query("SELECT * FROM `".$sql['data']."`.`".$sql['table']."` WHERE `del`='0' AND `op`='1' ORDER BY `date` DESC".($ninechan['sage'] ? " LIMIT ".$ninechan['sagelimit'] : null));
+					$getThreads = $sqldb->query("SELECT * FROM `".$sql['data']."`.`".$sql['table']."` WHERE `del`='0' AND `op`='1' ORDER BY `date` desc".($ninechan['sage'] ? " LIMIT ".$ninechan['sageLimit'] : null));
 					
 					// List posts
 					if(!$getThreads->num_rows) {		// Check if there's more than 1 post
@@ -266,7 +264,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 									print '<h3><a href=?v=post&t='.$post['tid'].'>'.L_NEWREPLY.'</a></h3>';
 								
 								// Mod tools
-								if($auth == $ninechan['modpass']) {
+								if($auth == $ninechan['modPass']) {
 									print '<font size="2">[<a href=?v=mod&del=purge&id='.$threadData['id'].'>'.L_PURGE.'</a>]';
 									if($threadData['lock']) {
 										print ' [<a href="?v=mod&lock=false&id='.$threadData['id'].'">'.L_UNLOCK.'</a>]</font>';
@@ -282,24 +280,24 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 							$postData['del']	= null;
 							
 							// Didn't feel like redoing this part, sorry [
-							if($ninechan['forcedanon']){
-								$postData['name'] = $ninechan['anonname'];
+							if($ninechan['forcedAnon']){
+								$postData['name'] = $ninechan['anonName'];
 								$postData['trip'] = null;
-							} elseif($ninechan['modsareanon']==1&&in_array($row['trip'],$ninechan['modtrip'])){ //-- Check if forced anon for mods is enabled
-								$postData['name'] = $ninechan['anonname'];
+							} elseif($ninechan['modsAreAnon']==1&&in_array($row['trip'],$ninechan['modTrip'])){ //-- Check if forced anon for mods is enabled
+								$postData['name'] = $ninechan['anonName'];
 								$postData['trip'] = null;
-							} elseif($ninechan['modsareanon']==2&&in_array($row['trip'],$ninechan['modtrip'])){ //-- Check if forced trip anon for mods is enabled
+							} elseif($ninechan['modsAreAnon']==2&&in_array($row['trip'],$ninechan['modTrip'])){ //-- Check if forced trip anon for mods is enabled
 								$postData['name'] = $post['name'];
 								$postData['trip'] = null;
-							} elseif($ninechan['adminsareanon']==1&&in_array($row['trip'],$ninechan['admintrip'])){ //-- Check if forced anon for admins is enabled
-								$postData['name'] = $ninechan['anonname'];
+							} elseif($ninechan['adminsAreAnon']==1&&in_array($row['trip'],$ninechan['adminTrip'])){ //-- Check if forced anon for admins is enabled
+								$postData['name'] = $ninechan['anonName'];
 								$postData['trip'] = null;
-							} elseif($ninechan['adminsareanon']==2&&in_array($row['trip'],$ninechan['admintrip'])){ //-- Check if forced trip anon for admins is enabled
+							} elseif($ninechan['adminsAreAnon']==2&&in_array($row['trip'],$ninechan['adminTrip'])){ //-- Check if forced trip anon for admins is enabled
 								$postData['name'] = $post['name'];
 								$postData['trip'] = null;
 							} else {
 								if(empty($post['name'])){
-									$postData['name'] = $ninechan['anonname'];
+									$postData['name'] = $ninechan['anonName'];
 								} else {
 									$postData['name'] = $post['name'];
 								}
@@ -319,9 +317,9 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 							else
 								print $postData['name'].$postData['trip'];
 							
-							if(in_array($post['trip'], $ninechan['admintrip'])) // Check if tripcode is Admin
+							if(in_array($post['trip'], $ninechan['adminTrip'])) // Check if tripcode is Admin
 								print ' <span class="admincap">## Admin</span>';
-							elseif(in_array($post['trip'], $ninechan['modtrip'])) // Check if tripcode is Mod
+							elseif(in_array($post['trip'], $ninechan['modTrip'])) // Check if tripcode is Mod
 								print ' <span class="modcap">## Mod</span>';
 						
 							print '</b></legend>';
@@ -332,7 +330,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 							print ($post['ban'] ? '<b><font size="2" class="ban">'.L_POSTBANNED.'</font></b><br />' : null);
 							
 								
-							if($auth == $ninechan['modpass']) {
+							if($auth == $ninechan['modPass']) {
 								print '<font size=2>[<a href="?v=mod&del=true&id='.$post['id'].'&t='.$post['tid'].'">'.L_DELETE.'</a>] [<a href="?v=mod&ban='.($post['ban'] ? 'false' : 'true').'&id='.$post['id'].'&t='.$post['tid'].'">'.($post['ban'] ? L_UNBAN : L_BAN).'</a>] [IP: '.base64_decode($post['ip']).']</font><br />'; //-- Regular mod tools
 							}
 							
@@ -342,7 +340,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 						}
 						
 						// Mod tools
-						if($auth == $ninechan['modpass']) {
+						if($auth == $ninechan['modPass']) {
 							print '<font size="2">[<a href=?v=mod&del=purge&id='.$threadData['id'].'>'.L_PURGE.'</a>]';
 							if($threadData['lock']) {
 								print ' [<a href="?v=mod&lock=false&id='.$threadData['id'].'">'.L_UNLOCK.'</a>]</font>';
@@ -403,14 +401,14 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					}
 					
 					if(!$postData['lock']) { //-- Only display post page if thread isn't locked
-						print('<tr><td>'.L_NAME.'</td><td><input name="name" type="text" value="'.@$_COOKIE[$ninechan['cookieprefix'].'name'].'" /></td></tr>');
-						print('<tr><td>'.L_EMAIL.'</td><td><input name="email" type="text" value="'.@$_COOKIE[$ninechan['cookieprefix'].'email'].'" /></td></tr>');
+						print('<tr><td>'.L_NAME.'</td><td><input name="name" type="text" value="'.@$_COOKIE[$ninechan['cookiePrefix'].'name'].'" /></td></tr>');
+						print('<tr><td>'.L_EMAIL.'</td><td><input name="email" type="text" value="'.@$_COOKIE[$ninechan['cookiePrefix'].'email'].'" /></td></tr>');
 						print('<tr><td>'.L_TITLE.'</td><td><input name="title" type="text" value="'.$postData['title'].'" /></td></tr>');
 						print('<tr><td>'.L_COMMENT.'</td><td><textarea name="content" rows="6" cols="48">'.$postData['text'].'</textarea></td></tr>');
-						if($ninechan['recaptcha']){ //-- Display reCAPTCHA if enabled in config
-							print('<tr><td>'.L_VERIFICATION.'</td><td>'.recaptcha_get_html($ninechan['recaptchapublic']).'</td></tr>');
+						if($ninechan['reCaptcha']){ //-- Display reCaptcha if enabled in config
+							print('<tr><td>'.L_VERIFICATION.'</td><td>'.reCaptcha_get_html($ninechan['reCaptchaPublic']).'</td></tr>');
 						}
-						print('<tr><td>'.L_PASSWORD.'</td><td><input name="password" type="password" placeholder="'.L_PASSWORDCONTEXT.'" value="'.@$_COOKIE[$ninechan['cookieprefix'].'pass'].'" /> <input value="'.L_SUBMIT.'" type="submit" /></td></tr>');
+						print('<tr><td>'.L_PASSWORD.'</td><td><input name="password" type="password" placeholder="'.L_PASSWORDCONTEXT.'" value="'.@$_COOKIE[$ninechan['cookiePrefix'].'pass'].'" /> <input value="'.L_SUBMIT.'" type="submit" /></td></tr>');
 						print('</table></form>');
 					}
 				break;
@@ -424,11 +422,11 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					
 					$submitData = array(); // Assign array to variable so we can store things in it later
 					
-					// Check ReCAPTCHA
-					if($ninechan['recaptcha'])	{
-						$recaptcha = recaptcha_check_answer($ninechan['recaptchaprivate'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']); // ReCAPTCHA data
+					// Check reCaptcha
+					if($ninechan['reCaptcha'])	{
+						$reCaptcha = reCaptcha_check_answer($ninechan['reCaptchaPrivate'], $_SERVER['REMOTE_ADDR'], $_POST['reCaptcha_challenge_field'], $_POST['reCaptcha_response_field']); // reCaptcha data
 						
-						if(!$recaptcha->is_valid) { // If ReCAPTCHA is invalid die and display error message
+						if(!$reCaptcha->is_valid) { // If reCaptcha is invalid die and display error message
 							print '<h2>'.L_INVALIDCAPTCHA.'</h2><meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 							break;
 						}
@@ -449,29 +447,29 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					$submitData['noredir']	= ($submitData['email'] == 'noko' ? true : false);
 
 					// Assign cookies
-					setcookie($ninechan['cookieprefix']."name", $submitData['name'], time() + $ninechan['cookielifetime'], $ninechan['cookiepath'], $_SERVER['SERVER_NAME']);
-					setcookie($ninechan['cookieprefix']."email", $submitData['email'], time() + $ninechan['cookielifetime'], $ninechan['cookiepath'], $_SERVER['SERVER_NAME']); 
-					setcookie($ninechan['cookieprefix']."pass", $submitData['password'], time() + $ninechan['cookielifetime'], $ninechan['cookiepath'], $_SERVER['SERVER_NAME']); 
+					setcookie($ninechan['cookiePrefix']."name", $submitData['name'], time() + $ninechan['cookieLifetime'], $ninechan['cookiePath'], $_SERVER['SERVER_NAME']);
+					setcookie($ninechan['cookiePrefix']."email", $submitData['email'], time() + $ninechan['cookieLifetime'], $ninechan['cookiePath'], $_SERVER['SERVER_NAME']); 
+					setcookie($ninechan['cookiePrefix']."pass", $submitData['password'], time() + $ninechan['cookieLifetime'], $ninechan['cookiePath'], $_SERVER['SERVER_NAME']); 
 					
 					// Check if title is valid
-					if(strlen($submitData['title']) <= $ninechan['titleminlength']) { // Check if too short
+					if(strlen($submitData['title']) <= $ninechan['titleMinLength']) { // Check if too short
 						print '<h2>'.L_TITLETOOSHORT.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
 					}
-					if(strlen($submitData['title']) >= $ninechan['titlemaxlength']) { // Check if too long
+					if(strlen($submitData['title']) >= $ninechan['titleMaxLength']) { // Check if too long
 						print '<h2>'.L_TITLETOOLONG.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
 					}
 					
 					// Check if comment is valid
-					if(strlen($submitData['content']) <= $ninechan['commentminlength']) { // Check if too short
+					if(strlen($submitData['content']) <= $ninechan['commentMinLength']) { // Check if too short
 						print '<h2>'.L_COMMENTTOOSHORT.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
 					}
-					if(strlen($submitData['content']) >= $ninechan['commentmaxlength']) { // Check if too long
+					if(strlen($submitData['content']) >= $ninechan['commentMaxLength']) { // Check if too long
 						print '<h2>'.L_COMMENTTOOLONG.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
@@ -541,7 +539,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 												
 						print '<table id="postForm" class="postForm">';
 						
-						print '<tr><td>'.L_PASSWORD.'</td><td><input name="password" type="password" placeholder="'.L_PASSWORDCONTEXT.'" value="'.@$_COOKIE[$ninechan['cookieprefix'].'pass'].'" /> <input value="'.L_SUBMIT.'" type="submit" /></td></tr>';
+						print '<tr><td>'.L_PASSWORD.'</td><td><input name="password" type="password" placeholder="'.L_PASSWORDCONTEXT.'" value="'.@$_COOKIE[$ninechan['cookiePrefix'].'pass'].'" /> <input value="'.L_SUBMIT.'" type="submit" /></td></tr>';
 						
 						print '</table>';
 						print '</form>';
@@ -550,7 +548,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 				
 				// Moderator Authentication
 				case 'mod':
-					if($auth == $ninechan['modpass']) { // Check if authenticated
+					if($auth == $ninechan['modPass']) { // Check if authenticated
 						if(isset($_POST['modkill'])) { // POST request modkill is set...
 							session_destroy(); // ...kill moderator session...
 							header('Location: ?v=mod'); // ...and redirect to ?v=mod
@@ -599,9 +597,9 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 							print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['id'].'" />'; // fallback
 						}
 					} else { // Else display login screen
-						if(isset($_POST['modpass'])) {
-							if($_POST['modpass'] == $ninechan['modpass'])
-								$_SESSION['mod'] = $ninechan['modpass'];
+						if(isset($_POST['modPass'])) {
+							if($_POST['modPass'] == $ninechan['modPass'])
+								$_SESSION['mod'] = $ninechan['modPass'];
 
 							header('Location: ?v=mod');
 							print '<meta http-equiv="refresh" content="0; url=?v=mod" />'; // fallback
@@ -609,7 +607,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 						
 						print '<h2>'.L_MODLOGIN.'</h2>';
 						print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?v=mod">';
-						print '<input type="password" name="modpass" /><input type="submit" value="'.L_LOGIN.'" />';
+						print '<input type="password" name="modPass" /><input type="submit" value="'.L_LOGIN.'" />';
 						print '</form>';
 					}
 				break;
@@ -632,7 +630,15 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 			print '</h6>';
 		}
 		?>
-		<!-- Please retain the full copyright notice below including the link to flashii.net. This not only gives respect to the amount of time given freely by the developer but also helps build interest, traffic and use of ninechan. -->
-		<h6><a href="http://ninechan.flash.moe/" target="_blank">ninechan</a> <?=($ninechan['showversion'] ? '1.10.2e ' : null);?>&copy; <a href="http://flash.moe/" target="_blank">Flashwave</a></h6>
+		<!--
+			Please retain the full copyright notice below including the link to flash.moe.
+			This not only gives respect to the amount of time given freely by the developer
+			but also helps build interest, traffic and use of ninechan.
+		-->
+		<h6>
+			<a href="http://ninechan.flash.moe/" target="_blank">ninechan</a>
+			<?=($ninechan['showVersion'] ? N_VERSION : null);?>
+			&copy; <a href="http://flash.moe/" target="_blank">Flashwave</a>
+		</h6>
 	</body>
 </html>
