@@ -1,6 +1,6 @@
 <?php
 // ninechan 1.11alpha1
-define('N_VERSION', '1.11alpha1');
+define('N_VERSION', '1.11alpha2');
 
 // Configuration files
 require 'config.php'; // Include Configuration
@@ -110,74 +110,78 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=<?=$ninechan['charset'];?>" />
-		<title><?=$ninechan['title'];?></title><?=($ninechan['desc'] ? '<meta name="description" content="'.$ninechan['desc'].'" />' : null);?>
+		<title><?=$ninechan['title'];?></title>
+		<?=($ninechan['desc'] ? '<meta name="description" content="'.$ninechan['desc'].'" />' : null);?>
 		<script type="text/javascript">
-		/// Apologies for my shitty Javascript
-		// Function to write to a cookie
-		function setCookie(name, content, expire) {
-			if(expire=="forever"){var expire = 60*60*24*365*99;}
-			if(expire=="default"){var expire = 60*60*24*7;}
-			document.cookie='<?=$ninechan['cookiePrefix'];?>'+name+'='+content+';max-age='+expire;
-		}
-		
-		// Function to delete a cookie
-		function delCookie(name) {
-			document.cookie='<?=$ninechan['cookiePrefix'];?>'+name+'=;max-age=1;path=/'
-		}
-		
-		// Function to get data from a cookie
-		function getCookie(name) {
-			return (name = new RegExp('(?:^|;\\s*)' + ('' + '<?=$ninechan['cookiePrefix'];?>'+name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
-		}
-		
-		// Get main style
-		function getMainStyle() {
-			var i,a;
-			for(i=0; (a = document.getElementsByTagName('link')[i]); i++) {
-				if(a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('rel').indexOf('alt') == -1 && a.getAttribute('title')) {
-					return a.getAttribute('title');
-				}
+			/// Apologies for my shitty Javascript
+			// Function to write to a cookie
+			function setCookie(name, content, expire) {
+				if(expire=="forever"){var expire = 60*60*24*365*99;}
+				if(expire=="default"){var expire = 60*60*24*7;}
+				document.cookie='<?=$ninechan['cookiePrefix'];?>'+name+'='+content+';max-age='+expire;
 			}
-			return null;
-		}
-		
-		// Get the currently active style
-		function getActiveStyle() {
-			var i, a;
-			for(i=0; (a = document.getElementsByTagName('link')[i]); i++) {
-				if(a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('title') && !a.disabled) {
-					return a.getAttribute('title');
-				}
+			
+			// Function to delete a cookie
+			function delCookie(name) {
+				document.cookie='<?=$ninechan['cookiePrefix'];?>'+name+'=;max-age=1;path=/'
 			}
-			return null;
-		}
-		
-		// Switch to another style
-		function setStyle(title) {
-			var i, a, main;
-			var titleFound = false;
-			setCookie('style', title, 'forever');
-			for(i=0; (a = document.getElementsByTagName('link')[i]); i++) {
-				if(a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('title')) {
-					a.disabled = true;
-					if(a.getAttribute('title') == title) {
-						a.disabled = false;
-						titleFound = true;
+			
+			// Function to get data from a cookie
+			function getCookie(name) {
+				return (name = new RegExp('(?:^|;\\s*)' + ('' + '<?=$ninechan['cookiePrefix'];?>'+name).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') + '=([^;]*)').exec(document.cookie)) && name[1];
+			}
+			
+			// Get main style
+			function getMainStyle() {
+				var i,a;
+				for(i=0; (a = document.getElementsByTagName('link')[i]); i++) {
+					if(a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('rel').indexOf('alt') == -1 && a.getAttribute('title')) {
+						return a.getAttribute('title');
 					}
 				}
+				return null;
 			}
-			if(!titleFound && title != null) {
-				setStyle(getMainStyle());
+			
+			// Get the currently active style
+			function getActiveStyle() {
+				var i, a;
+				for(i=0; (a = document.getElementsByTagName('link')[i]); i++) {
+					if(a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('title') && !a.disabled) {
+						return a.getAttribute('title');
+					}
+				}
+				return null;
 			}
-		}
-		
-		// Initiate Frontend Javascript Data
-		function init() {
-			if(getCookie('style') == null)
-				setStyle(getMainStyle());
-			else
-				setStyle(getCookie('style'));
-		}
+			
+			// Switch to another style
+			function setStyle(title) {
+				var i, a, main;
+				var titleFound = false;
+				setCookie('style', title, 'forever');
+				for(i=0; (a = document.getElementsByTagName('link')[i]); i++) {
+					if(a.getAttribute('rel').indexOf('style') != -1 && a.getAttribute('title')) {
+						a.disabled = true;
+						if(a.getAttribute('title') == title) {
+							a.disabled = false;
+							titleFound = true;
+						}
+					}
+				}
+				if(!titleFound && title != null) {
+					setStyle(getMainStyle());
+				}
+			}
+			
+			// Initiate Frontend Javascript Data
+			function init() {
+				if(getCookie('style') == null)
+					setStyle(getMainStyle());
+				else
+					setStyle(getCookie('style'));
+			}
+			
+			// Execute Initiation Function on load
+			window.onload = init;
 		</script>
 		<?php
 		if($ninechan['styles']) { // Check if styles are enabled
@@ -190,7 +194,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		}
 		?>
 	</head>
-	<body onload="init();">
+	<body>
 		<h1><a href="./"><?=$ninechan['title'];?></a></h1>
 		<?=($ninechan['desc'] ? '&nbsp;<i>'.$ninechan['desc'].'</i>' : null);?>
 		<hr />
@@ -204,8 +208,15 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 		if($banCheck)
 			print '<div class="banmsg">'.L_USERBANNEDMSG.'</div><hr />';
 		
-		if(!isset($_COOKIE[$ninechan['cookiePrefix'].'pass'])) // Check if pass cookie is set if not set it
-			setcookie($ninechan['cookiePrefix']."pass", generatePassword(), time() + $ninechan['cookieLifetime'], "/", $_SERVER['SERVER_NAME']); // Generate random password
+		if(!isset($_COOKIE[$ninechan['cookiePrefix'].'pass'])) { // Check if pass cookie is set if not set it
+			setcookie( // Generate random password and assign it to cookie
+				$ninechan['cookiePrefix'] . "pass",
+				generatePassword(),
+				time() + $ninechan['cookieLifetime'],
+				"/",
+				$_SERVER['SERVER_NAME']
+			);
+		}
 		
 		if(isset($_GET['v'])) {
 			switch($_GET['v']) {
@@ -224,6 +235,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 						print '<ol>';
 						
 						while($thread = $getThreads->fetch_array(MYSQLI_ASSOC)) {
+							// Need to figure out why the w3c validator does not like the & in a place where it should be...
 							print '<li><a href="?v=thread&t='.$thread['tid'].'">'.$thread['title'].'</a>';
 						}
 						
@@ -279,6 +291,7 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 							$postData['trip']	= null;
 							$postData['del']	= null;
 							
+							// Should probably actualy redo this, like holy shit
 							// Didn't feel like redoing this part, sorry [
 							if($ninechan['forcedAnon']){
 								$postData['name'] = $ninechan['anonName'];
@@ -447,29 +460,47 @@ $auth = @$_SESSION['mod'];	// Set an alias for mod
 					$submitData['noredir']	= ($submitData['email'] == 'noko' ? true : false);
 
 					// Assign cookies
-					setcookie($ninechan['cookiePrefix']."name", $submitData['name'], time() + $ninechan['cookieLifetime'], $ninechan['cookiePath'], $_SERVER['SERVER_NAME']);
-					setcookie($ninechan['cookiePrefix']."email", $submitData['email'], time() + $ninechan['cookieLifetime'], $ninechan['cookiePath'], $_SERVER['SERVER_NAME']); 
-					setcookie($ninechan['cookiePrefix']."pass", $submitData['password'], time() + $ninechan['cookieLifetime'], $ninechan['cookiePath'], $_SERVER['SERVER_NAME']); 
+					setcookie(
+						$ninechan['cookiePrefix'] . "name",
+						$submitData['name'],
+						time() + $ninechan['cookieLifetime'],
+						$ninechan['cookiePath'],
+						$_SERVER['SERVER_NAME']
+					);
+					setcookie(	
+						$ninechan['cookiePrefix'] . "email",
+						$submitData['email'],
+						time() + $ninechan['cookieLifetime'],
+						$ninechan['cookiePath'],
+						$_SERVER['SERVER_NAME']
+					); 
+					setcookie(
+						$ninechan['cookiePrefix'] . "pass",
+						$submitData['password'],
+						time() + $ninechan['cookieLifetime'],
+						$ninechan['cookiePath'],
+						$_SERVER['SERVER_NAME']
+					); 
 					
 					// Check if title is valid
-					if(strlen($submitData['title']) <= $ninechan['titleMinLength']) { // Check if too short
+					if(empty($submitData['title']) || strlen($submitData['title']) < $ninechan['titleMinLength']) { // Check if too short
 						print '<h2>'.L_TITLETOOSHORT.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
 					}
-					if(strlen($submitData['title']) >= $ninechan['titleMaxLength']) { // Check if too long
+					if(strlen($submitData['title']) > $ninechan['titleMaxLength']) { // Check if too long
 						print '<h2>'.L_TITLETOOLONG.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
 					}
 					
 					// Check if comment is valid
-					if(strlen($submitData['content']) <= $ninechan['commentMinLength']) { // Check if too short
+					if(empty($submitData['title']) || strlen($submitData['content']) < $ninechan['commentMinLength']) { // Check if too short
 						print '<h2>'.L_COMMENTTOOSHORT.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
 					}
-					if(strlen($submitData['content']) >= $ninechan['commentMaxLength']) { // Check if too long
+					if(strlen($submitData['content']) > $ninechan['commentMaxLength']) { // Check if too long
 						print '<h2>'.L_COMMENTTOOLONG.'</h2>';
 						print '<meta http-equiv="refresh" content="2; URL='.$_SERVER['PHP_SELF'].'" />';
 						break;
