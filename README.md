@@ -28,4 +28,4 @@ Features
 
 Help
 ----
-Although I don't really see when you need help with the board just send me an email (email address is on github profile) or ask about it on http://ninechan.flash.moe/sup/
+Although I don't really see when you need help with the board just send me an email (email address is on github profile) or ask about it on one of the board on http://forum.flash.moe/viewforum.php?f=5
