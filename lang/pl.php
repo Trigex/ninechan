@@ -45,8 +45,8 @@ define('L_COMMENTTOOLONG', 'Dany komentarz jest za długi.'); // The given comme
 
 // Warnings and errors //
 define('L_PHP_OUTDATED', 'Uaktualnij PHP do wersji 5.3 lub wyższej.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'MySQLi nie jest włączona w twoje instalacji PHP.'); // SQL connect function does not exist
-define('L_SQL_CONNECT', 'Błąd Połączenia PDO'); // Error while connecting to MySQL
+define('L_SQL_FUNCTION', 'PDO nie jest włączona w twoje instalacji PHP.'); // SQL connect function does not exist
+define('L_SQL_CONNECT', 'Błąd Połączenia SQL'); // Error while connecting to MySQL
 define('L_INVALIDCAPTCHA', 'Weryfikacja nieudany!'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', 'Usunięcie udane!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'Usunięcie nieudany!'); // Message displayed when post isn't deleted
