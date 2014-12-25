@@ -1,5 +1,9 @@
 <?php
 //// Ninechan Official English Language File ////
+
+// Meta //
+define('LDATA_VERSION', '1.11alpha2'); // Version of ninechan language file is made for
+
 // Board //
 define('L_THREADS', 'Threads'); // Threads
 define('L_THREAD', 'Thread'); // Thread
@@ -12,7 +16,7 @@ define('L_BY', 'by'); // by
 define('L_RETO', 'Reply to'); // Reply to
 define('L_TITLE', 'Title'); // Title
 define('L_NAME', 'Name'); // Name
-define('L_EMAIL', 'Email'); // Name
+define('L_EMAIL', 'E-mail'); // E-mail
 define('L_COMMENT', 'Comment'); // Comment
 define('L_SUBMIT', 'Submit'); // Submit
 define('L_VERIFICATION', 'Verification'); // Verification
@@ -38,9 +42,8 @@ define('L_COMMENTTOOLONG', 'The given comment is too long.'); // The given comme
 
 // Warnings and errors //
 define('L_PHP_OUTDATED', 'Please upgrade your PHP installation to at least 5.3 or higher.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'Your PHP installation does not support MySQLi.'); // SQL connect function does not exist
+define('L_SQL_FUNCTION', 'Your PHP installation does not support PDO.'); // SQL connect function does not exist
 define('L_SQL_CONNECT', 'SQL Connection Error'); // Error while connecting to MySQL
-define('L_UDB_EXISTS', 'updatedb.php exists, either you didn\'t remove it or the unlink function failed to.'); // Display if updatedb.php exists
 define('L_INVALIDCAPTCHA', 'Verification failed'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', 'Successfully deleted!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'Failed to delete.'); // Message displayed when post isn't deleted

@@ -4,6 +4,9 @@
   Flappyzor - flappy@goat.si
 */
 
+// Meta //
+define('LDATA_VERSION', '1.11alpha2'); // Version of ninechan language file is made for
+
 // Board //
 define('L_THREADS', 'Threads'); // Threads
 define('L_THREAD', 'Thread'); // Thread
@@ -42,9 +45,8 @@ define('L_COMMENTTOOLONG', 'Komentar yang diberikan terlalu panjang.'); // The g
 
 // Warnings and errors //
 define('L_PHP_OUTDATED', 'Silakan meng-upgrade instalasi PHP Anda untuk setidaknya 5,3 atau lebih tinggi.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'Instalasi PHP Anda tidak mendukung MySQLi.'); // SQL connect function does not exist
+define('L_SQL_FUNCTION', 'Instalasi PHP Anda tidak mendukung PDO.'); // SQL connect function does not exist
 define('L_SQL_CONNECT', 'Kesalahan Connection SQL'); // Error while connecting to MySQL
-define('L_UDB_EXISTS', 'updatedb.php ada, baik Anda tidak menghapus atau fungsi unlink gagal.'); // Display if updatedb.php exists
 define('L_INVALIDCAPTCHA', 'Verifikasi gagal'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', 'Berhasil dihapus!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'Gagal menghapus.'); // Message displayed when post isn't deleted

@@ -1,6 +1,9 @@
 <?php
-die('Language file outdated, if anyone wants to fix this make a pull request with the fixed stuff and removed this die line.');
 //// Ninechan Official Spanish Language File ////
+
+// Meta //
+define('LDATA_VERSION', '1.9'); // Version of ninechan language file is made for
+
 // Board //
 define('L_THREADS', 'Hilos'); // Threads
 define('L_THREAD', 'Hilo'); // Thread
@@ -36,9 +39,8 @@ define('L_MODTOOLS', 'Las herramientas de moderación deberían empezar a aparec
 
 // Warnings and errors //
 define('L_PHP_OUTDATED', 'Por favor, actualiza tu instalación de PHP a por lo menos 5.3 o superior.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'Tu instalación de PHP no soporta MySQLi.'); // SQL connect function does not exist
+define('L_SQL_FUNCTION', 'Tu instalación de PHP no soporta PDO.'); // SQL connect function does not exist
 define('L_SQL_CONNECT', 'Error de conexión SQL'); // Error while connecting to MySQL
-define('L_UDB_EXISTS', 'updatedb.php existe; o no lo has borrado o la función unlink falló.'); // Display if updatedb.php exists
 define('L_INVALIDCAPTCHA', 'La verificación falló'); // Message displayed when captcha is wrong
 define('L_DEL_SUCCEED', '¡Eliminado satisfactoriamente!'); // Message displayed when post is deleted
 define('L_DEL_FAILED', 'No se pudo eliminar.'); // Message displayed when post isn't deleted

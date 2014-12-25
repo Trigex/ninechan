@@ -1,6 +1,6 @@
 Todo list
 ====================
 - Redo the projectile vomit from line 293 till 319
-- Port ninechan over to PDO
 - Ram some prepared statements in there
 - Improve JavaScript(?)
+- Make bbcode management more convenient
