@@ -1,93 +1,94 @@
 html, body {
-	font-family: Verdana, Helvetica, sans-serif;
-	margin: 0px;
-	padding: 0px;
-	min-height: 100%;
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 15px;
+    margin: 0px;
+    padding: 0px;
+    min-height: 100%;
 }
 body {
-	background: linear-gradient(to bottom, #9677B2, #FFFFFF) repeat-x #FFFFFF;
-	height: 100%;
-	width: 100%;
+    background: linear-gradient(to bottom, #9677B2, #FFFFFF) repeat-x #FFFFFF;
+    height: 100%;
+    width: 100%;
 }
 hr {
-	border: 1px solid;
-	margin: 0px;
-	padding: 0px;
+    border: 1px solid;
+    margin: 0px;
+    padding: 0px;
 }
 h1,h2,h3,h4,h5,h6 {
-	margin: 2px;
-	padding: 0px;
+    margin: 2px;
+    padding: 0px;
 }
 h1 {
-	display: inline-block;
+    display: inline-block;
 }
 h1 a {
-	color: #A08;
+    color: #A08;
 }
 a {
-	text-decoration: none;
+    text-decoration: none;
 }
 a:hover, a:active {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 legend {
-	background: #C082B4;
-	border: 1px solid #A83292;
-	padding: 2px;
+    background: #C082B4;
+    border: 1px solid #A83292;
+    padding: 2px;
 }
 input[type="text"] {
-	width: 232px;
+    width: 232px;
 }
 table.postForm > tbody textarea {
-	width: 292px;
+    width: 292px;
 }
 input[type="text"], input[type="password"], table.postForm > tbody textarea {
-	margin: 0px 2px 0px 0px;
-	padding: 2px 4px 3px;
-	border: 1px solid #AAA;
-	outline: medium none;
-	font-family: arial,helvetica,sans-serif;
-	font-size: 10pt;
+    margin: 0px 2px 0px 0px;
+    padding: 2px 4px 3px;
+    border: 1px solid #AAA;
+    outline: medium none;
+    font-family: arial,helvetica,sans-serif;
+    font-size: 10pt;
 }
 table.postForm {
-	border-spacing: 1px;
+    border-spacing: 1px;
 }
 table.postForm > tbody > tr {
-	margin: 0px;
-	padding: 0px;
-	font-size: 10pt;
+    margin: 0px;
+    padding: 0px;
+    font-size: 10pt;
 }
 table.postForm > tbody > tr > td:first-child {
-	padding: -2px;
-	padding-right: 5px;
-	font-weight: bold;
-	text-align: right;
-	width: 100px;
+    padding: -2px;
+    padding-right: 5px;
+    font-weight: bold;
+    text-align: right;
+    width: 100px;
 }
 .trip {
-	font-weight: normal !important;
-	color: #090;
+    font-weight: normal !important;
+    color: #090;
 }
 .ban {
-	color: #F00;
+    color: #F00;
 }
 .banmsg {
-	background: #C00;
-	padding: 5px;
+    background: #C00;
+    padding: 5px;
 }
 .spoiler {
-	background: black;
-	color: black;
+    background: black;
+    color: black;
 }
 .spoiler:hover {
-	color: white !important;
+    color: white !important;
 }
 .quote {
-	color: #789922 !important;
+    color: #789922 !important;
 }
 .admincap {
-	color: #AA0000 !important;
+    color: #AA0000 !important;
 }
 .modcap {
-	color: #660099 !important;
+    color: #660099 !important;
 }
