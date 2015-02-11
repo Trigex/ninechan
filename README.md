@@ -5,6 +5,8 @@ A simple text based discussion board of which you can find the demo, live develo
 
 The version on GitHub is _usually_ in sync with the one on the development board.
 
+When downloading ninechan make sure to download it from the Releases tab thing and not master to ensure the stability of your board.
+
 Requirements
 ------------
 
