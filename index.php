@@ -297,8 +297,9 @@ $auth = @$_SESSION['mod']; // Set an alias for mod
                         // Get thread data
                         $threadData = $getThread->fetchAll();
                         
+                        // Iterate over the thread data
                         foreach($threadData as $postData) {
-                            if($postData['op']) { // Assign thread variables                                
+                            if($postData['op']) { // Assign thread variables if poster is OP
                                 print '<h2>'.L_THREAD.': '.$postData['title'].'</h2>'; // Print L_THREAD and the name of the thread
                                 
                                 if($postData['locked']) // Check if thread is locked and if true display message
@@ -317,6 +318,7 @@ $auth = @$_SESSION['mod']; // Set an alias for mod
                                 }
                             }
                             
+                            // Set names to Anonymous if required in the configuration
                             if($ninechan['forcedAnon']) {
                                 $posterName = $ninechan['anonName'];
                                 $posterTrip = null;
@@ -345,6 +347,7 @@ $auth = @$_SESSION['mod']; // Set an alias for mod
                                 }
                             }
                             
+                            // Print the regular fieldset for posts
                             print '<fieldset id="'.$postData['id'].'">';
                             print '<legend><b>'.$postData['title'].'</b> <a href="#'.$postData['id'].'">'.L_BY.'</a> <b>';
                             
@@ -428,6 +431,7 @@ $auth = @$_SESSION['mod']; // Set an alias for mod
                         // Assign thread data to variable
                         $threadData = $getData->fetch();
                         
+                        // Print non-existent thread if nothing was found
                         if($threadData == NULL) {
                             print '<h2>'. L_NONEXISTENT .'</h2>';
                             print '<a href="'. $_SERVER['PHP_SELF'] .'?v=index">'. L_RETURN .'</a>';
