@@ -1,63 +1,72 @@
 <?php
-//// Ninechan Official Dutch Language File ////
+/*
+ * Dutch translation
+ * By Flashwave <https://github.com/flashwave>
+ */
 
-// Meta //
-define('LDATA_VERSION', '1.11alpha2'); // Version of ninechan language file is made for
+// Version of ninechan this language file is created for
+$langVersion = '2.0';
 
-// Board //
-define('L_THREADS', 'Threads'); // Threads
-define('L_THREAD', 'Thread'); // Thread
-define('L_NEWTHREAD', 'Nieuwe Thread'); // New Thread
-define('L_NEWREPLY', 'Nieuwe Reactie'); // New Reply
-define('L_LOCKED', 'Gesloten'); // Locked
-define('L_BY', 'door'); // by
+$language = [
 
-// Posting //
-define('L_RETO', 'Reactie naar'); // Reply to
-define('L_TITLE', 'Titel'); // Title
-define('L_NAME', 'Naam'); // Name
-define('L_EMAIL', 'Email'); // Name
-define('L_COMMENT', 'Bericht'); // Comment
-define('L_SUBMIT', 'Stuur'); // Submit
-define('L_VERIFICATION', 'Verificatie'); // Verification
-define('L_PASSWORD', 'Wachtwoord'); // Password
-define('L_PASSWORDCONTEXT', 'gebruikt voor post verwijdering'); // used for post deletion
-define('L_DELPOST', 'Verwijder post'); // Delete post
+    // Board
+    'THREADS'   => 'Threads',
+    'THREAD'    => 'Thread',
+    'NEWTHREAD' => 'Nieuwe Thread',
+    'NEWREPLY'  => 'Beantwoord',
+    'LOCKED'    => 'Gesloten',
+    'BY'        => 'door',
+    'RETURN'    => 'Terug naar de Index',
 
-// Messages //
-define('L_BOARD_CLOSED', 'Het '.$ninechan['title'].' forum is gesloten op het moment.'); // Boards are closed
-define('L_REASON', 'Reden'); // Reason
-define('L_BANNED', 'U bent verbannen van dit forum.'); // Text displayed upon being banned
-define('L_POSTBANNED', '(GEBRUIKER WAS VERBANNEN VOOR DIT BERICHT)'); // Text displayed under banned post
-define('L_EMPTY', 'Er zijn geen threads.'); // Text displayed when the board is empty
-define('L_NONEXISTENT', 'Niet bestaande thread.'); // Text displayed when the board is empty
-define('L_LOCKEDMSG', 'De thread waarop u probeert te reageren is gesloten.'); // Text displayed when the board is empty
-define('L_LOCKEDMSG_2', 'De thread waarin jouw bericht was is gelockt en je kunt je bericht niet verwijderen.'); // Text displayed when the thread is locked and deleting isn't possible
-define('L_POSTED', 'Verstuurd!'); // Text displayed when the post is successful
-define('L_MODTOOLS', 'De moderator hulpmiddelen moeten nu bij de berichten staan.'); // Mod tools message
-define('L_TITLETOOSHORT', 'De gegeven titel is te kort.'); // The given title is too short.
-define('L_TITLETOOLONG', 'De gegeven titel is te lang.'); // The given title is too long.
-define('L_COMMENTTOOSHORT', 'Het gegeven bericht is te kort.'); // The given comment is too short.
-define('L_COMMENTTOOLONG', 'Het gegeven bericht is te lang.'); // The given comment is too long.
+    // Posting
+    'RETO'              => 'Antwoord op',
+    'TITLE'             => 'Titel',
+    'NAME'              => 'Naam',
+    'EMAIL'             => 'E-mail',
+    'COMMENT'           => 'Commentaar',
+    'SUBMIT'            => 'Versturen',
+    'VERIFICATION'      => 'Verificatie',
+    'PASSWORD'          => 'Wachtwoord',
+    'PASSWORDCONTEXT'   => 'voor het verwijderen van dit bericht',
+    'DELPOST'           => 'Verwijder bericht',
 
-// Warnings and errors //
-define('L_PHP_OUTDATED', 'Upgrade uw PHP versie naar ten minste 5.3.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'Uw PHP installatie mist de PDO plugin.'); // SQL connect function does not exist
-define('L_SQL_CONNECT', 'SQL Verbindings Fout'); // Error while connecting to MySQL
-define('L_INVALIDCAPTCHA', 'Verification mislukt'); // Message displayed when captcha is wrong
-define('L_DEL_SUCCEED', 'Successvol verwijdert!'); // Message displayed when post is deleted
-define('L_DEL_FAILED', 'Verwijderen mislukt.'); // Message displayed when post isn't deleted
-define('L_USERBANNEDMSG', 'Je bent verbannen van posten op dit forum'); // Message displayed on top of the board when IP is banned
-define('L_USERBANNED', 'Kan de actie niet voltooien omdat je IP verbannen.'); // Message displayed when trying to access a restricted page
+    // Messages
+    'BOARD_CLOSED'      => 'Het forum is gesloten.',
+    'REASON'            => 'Reden',
+    'BANNED'            => 'Je bent verbannen van dit forum!',
+    'POSTBANNED'        => '(GEBRUIKER WAS VERBANNEN VOOR DIT BERICHT)',
+    'EMPTY'             => 'Er zijn nog geen threads om the weergeven.',
+    'NONEXISTENT'       => 'De opgevraagde thread bestaat niet.',
+    'LOCKEDMSG'         => 'De thread waarop jij probeert te antwoorden is gesloten.',
+    'LOCKEDMSGDEL'      => 'Je kunt deze post niet verwijderen omdat de thread waarin deze zit gesloten is.',
+    'POSTED'            => 'Gepost!',
+    'MODTOOLS'          => 'De moderator tools verschijnen nu naast berichten.',
+    'TITLETOOSHORT'     => 'De gegeven titel is te kort.',
+    'TITLETOOLONG'      => 'De gegeven titel is te lang.',
+    'COMMENTTOOSHORT'   => 'Het gegeven commentaar is te lang.',
+    'COMMENTTOOLONG'    => 'Het gegeven commentaar is te kort.',
+    'NOTNUMERIC'        => 'De gevraagde bericht gegevens konden niet opgeroept worden.',
 
-// Moderator tools //
-define('L_DELETE', 'Verwijder'); // Delete button
-define('L_PURGE', 'Verwijder Thread'); // Purge button
-define('L_LOCK', 'Sluit Thread'); // Lock button
-define('L_UNLOCK', 'Heropen Thread'); // Unlock button
-define('L_BAN', 'Ban'); // Ban button
-define('L_UNBAN', 'Ontban'); // Unban button
-define('L_MODLOGOUT', 'Moderator Logout'); // Moderator Logout
-define('L_MODLOGIN', 'Moderator Login'); // Moderator Login
-define('L_LOGOUT', 'Uitloggen'); // Logout
-define('L_LOGIN', 'Inloggen'); // Login
+    // Warnings and errors
+    'PHP_OUTDATED'      => 'Upgrade je PHP versie naar op zijn minst 5.3.',
+    'SQL_FUNCTION'      => 'Jou PHP installatie heeft geen ondersteuning voor PDO.',
+    'SQL_CONNECT'       => 'SQL Verbindings Fout',
+    'INVALIDCAPTCHA'    => 'Verificatie mislukt!',
+    'DEL_SUCCEED'       => 'Succesvol verwijderd!',
+    'DEL_FAILED'        => 'Verwijderen mislukt.',
+    'USERBANNEDMSG'     => 'Je bent verbannen van dit forum.',
+    'USERBANNED'        => 'Kon de actie niet voltooien omdat je IP verbannen is.',
+
+    // Moderator tools
+    'DELETE'    => 'Verwijder',
+    'PURGE'     => 'Verwijder Thread',
+    'LOCK'      => 'Sluit Thread',
+    'UNLOCK'    => 'Open Thread',
+    'BAN'       => 'Verban IP',
+    'UNBAN'     => 'Ontban IP',
+    'MODLOGOUT' => 'Moderator Authenticatie',
+    'MODLOGIN'  => 'Moderator Authenticatie',
+    'LOGOUT'    => 'Uitloggen',
+    'LOGIN'     => 'Inloggen'
+
+];

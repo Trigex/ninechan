@@ -1,0 +1,11 @@
+{
+    "\/\\[b\\](.*?)\\[\\\/b\\]\/is": "<b>$1<\/b>",
+    "\/\\[i\\](.*?)\\[\\\/i\\]\/is": "<i>$1<\/i>",
+    "\/\\[u\\](.*?)\\[\\\/u\\]\/is": "<u>$1<\/u>",
+    "\/\\[url\\=(.*?)\\](.*?)\\[\\\/url\\]\/is": "<a href=\"$1\" rel=\"nofollow\" title=\"$2 - $1\">$2<\/a>",
+    "\/\\[url\\](.*?)\\[\\\/url\\]\/is": "<a href=\"$1\" rel=\"nofollow\" title=\"$1\">$1<\/a>",
+    "\/\\[spoiler\\](.*?)\\[\\\/spoiler\\]\/is": "<span class=\"spoiler\">$1<\/span>",
+    "\/&gt;&gt;(.*[0-9])\/i": "<a class=\"lquote\" href=\"#$1\">&gt;&gt;$1<\/a>",
+    "\/^&gt;(.*?)$\/im": "<span class=\"quote\">&gt;$1<\/span>",
+    "\/^.*(youtu.be|youtube.com\\\/embed\\\/|watch\\?v=|\\&v=)([^!<>@&#\\\/\\s]*)\/is": "<iframe style=\"width:425px;height:350px;\" src=\"https:\/\/www.youtube.com\/embed\/$2\" frameborder=\"0\" allowfullscreen><\/iframe>"
+}

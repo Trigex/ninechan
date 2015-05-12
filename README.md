@@ -10,11 +10,11 @@ When downloading ninechan make sure to download it from the Releases tab thing a
 Requirements
 ------------
 
-| *Server-Side*          | *Client-Side*                | 
-| ---------------------- | ---------------------------- |
-| PHP >= 5.3             | Enabled JavaScript           |
-| MySQL >= 4             | CSS Compatibility            |
-| Short PHP Tags         | Cookies enabled              |
+| *Server-Side*                      | *Client-Side*                | 
+| ---------------------------------- | ---------------------------- |
+| PHP >= 5.3                         | Enabled JavaScript           |
+| Any PDO compatible Database Engine | CSS Compatibility            |
+| Short PHP Tags                     | Cookies enabled              |
 
 Features
 --------
@@ -30,4 +30,4 @@ Features
 
 Help
 ----
-Although I don't really see when you need help with the board just send me an email (email address is on github profile) or ask about it on one of the board on http://forum.flash.moe/viewforum.php?f=5
+Although I don't really see when you need help with the script just send me an email (email address is on github profile) or ask about it in the issues section

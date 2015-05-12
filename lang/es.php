@@ -1,58 +1,72 @@
 <?php
-//// Ninechan Official Spanish Language File ////
+/*
+ * Spanish translation
+ * By Kevin Lopez Brante <https://github.com/kddlb>
+ */
 
-// Meta //
-define('LDATA_VERSION', '1.9'); // Version of ninechan language file is made for
+// Version of ninechan this language file is created for
+$langVersion = '2.0';
 
-// Board //
-define('L_THREADS', 'Hilos'); // Threads
-define('L_THREAD', 'Hilo'); // Thread
-define('L_NEWTHREAD', 'Nuevo hilo'); // New Thread
-define('L_NEWREPLY', 'Nueva respuesta'); // New Reply
-define('L_LOCKED', 'Bloqueado'); // Locked
-define('L_BY', 'por'); // by
+$language = [
 
-// Posting //
-define('L_RETO', 'Responder a'); // Reply to
-define('L_TITLE', 'Título'); // Title
-define('L_NAME', 'Nombre'); // Name
-define('L_EMAIL', 'Email'); // Name
-define('L_COMMENT', 'Comentario'); // Comment
-define('L_SUBMIT', 'Enviar'); // Submit
-define('L_VERIFICATION', 'Verificación'); // Verification
-define('L_PASSWORD', 'Contraseña'); // Password
-define('L_PASSWORDCONTEXT', 'utilizada para poder eliminar posts'); // used for post deletion
-define('L_DELPOST', 'Eliminar post'); // Delete post
+    // Board
+    'THREADS'   => 'Hilos',
+    'THREAD'    => 'Hilo',
+    'NEWTHREAD' => 'Nuevo hilo',
+    'NEWREPLY'  => 'Nueva respuesta',
+    'LOCKED'    => 'Bloqueado',
+    'BY'        => 'por',
+    'RETURN'    => 'Return to Index',
 
-// Messages //
-define('L_BOARD_CLOSED', 'Los foros '.$ninechan['title'].' están cerrados en estos momentos.'); // Boards are closed
-define('L_REASON', 'Razón'); // Reason
-define('L_BANNED', 'Has sido baneado de este foro.'); // Text displayed upon being banned
-define('L_EMPTY', 'No hay hilos.'); // Text displayed when the board is empty
-define('L_NONEXISTENT', 'No existe el hilo.'); // Text displayed when the board is empty
-define('L_LOCKEDMSG', 'El hilo al que intentaste responder está bloqueado.'); // Text displayed when the thread is locked and replying isn't possible
-define('L_LOCKEDMSG_2', 'No se pueden eliminar posts en hilos bloqueados.'); // Text displayed when the thread is locked and deleting isn't possible
-define('L_POSTED', '¡Posteado!'); // Text displayed when the post is successful
-define('L_INVALIDTITLE', '¡Título inválido!'); // Text displayed when the name field is empty or invalid
-define('L_NOCOMMENT', '¡Comentario inválido!'); // Text displayed when the comment field is empty or invalid
-define('L_MODTOOLS', 'Las herramientas de moderación deberían empezar a aparecer al lado de los posts.'); // Mod tools message
+    // Posting
+    'RETO'              => 'Responder a',
+    'TITLE'             => 'Título',
+    'NAME'              => 'Nombre',
+    'EMAIL'             => 'Email',
+    'COMMENT'           => 'Comentario',
+    'SUBMIT'            => 'Enviar',
+    'VERIFICATION'      => 'Verificación',
+    'PASSWORD'          => 'Contraseña',
+    'PASSWORDCONTEXT'   => 'utilizada para poder eliminar posts',
+    'DELPOST'           => 'Eliminar post',
 
-// Warnings and errors //
-define('L_PHP_OUTDATED', 'Por favor, actualiza tu instalación de PHP a por lo menos 5.3 o superior.'); // Outdated PHP version
-define('L_SQL_FUNCTION', 'Tu instalación de PHP no soporta PDO.'); // SQL connect function does not exist
-define('L_SQL_CONNECT', 'Error de conexión SQL'); // Error while connecting to MySQL
-define('L_INVALIDCAPTCHA', 'La verificación falló'); // Message displayed when captcha is wrong
-define('L_DEL_SUCCEED', '¡Eliminado satisfactoriamente!'); // Message displayed when post is deleted
-define('L_DEL_FAILED', 'No se pudo eliminar.'); // Message displayed when post isn't deleted
+    // Messages
+    'BOARD_CLOSED'      => 'Los foros están cerrados en estos momentos.',
+    'REASON'            => 'Razón',
+    'BANNED'            => 'Has sido baneado de este foro.',
+    'POSTBANNED'        => '(USER WAS BANNED FOR THIS POST)',
+    'EMPTY'             => 'No hay hilos.',
+    'NONEXISTENT'       => 'No existe el hilo.',
+    'LOCKEDMSG'         => 'El hilo al que intentaste responder está bloqueado.',
+    'LOCKEDMSGDEL'      => 'No se pueden eliminar posts en hilos bloqueados.',
+    'POSTED'            => '¡Posteado!',
+    'MODTOOLS'          => 'Las herramientas de moderación deberían empezar a aparecer al lado de los posts.',
+    'TITLETOOSHORT'     => 'The given title is too short.',
+    'TITLETOOLONG'      => 'The given title is too long.',
+    'COMMENTTOOSHORT'   => 'The given comment is too short.',
+    'COMMENTTOOLONG'    => 'The given comment is too long.',
+    'NOTNUMERIC'        => 'Could not retrieve post data because the ID you requested is not numeric, check your URL and try again.',
 
-// Moderator tools //
-define('L_DELETE', 'Eliminar'); // Delete button
-define('L_PURGE', 'Purgar hilo'); // Purge button
-define('L_LOCK', 'Bloquear hilo'); // Lock button
-define('L_UNLOCK', 'Desbloquear hilo'); // Unlock button
-define('L_BAN', 'Banear'); // Ban button
-define('L_UNBAN', 'Desbanear'); // Unban button
-define('L_MODLOGOUT', 'Salir'); // Moderator Logout
-define('L_MODLOGIN', 'Entrar como moderador'); // Moderator Login
-define('L_LOGOUT', 'Salir'); // Logout
-define('L_LOGIN', 'Entrar'); // Login
+    // Warnings and errors
+    'PHP_OUTDATED'      => 'Por favor, actualiza tu instalación de PHP a por lo menos 5.3 o superior.',
+    'SQL_FUNCTION'      => 'Tu instalación de PHP no soporta PDO.',
+    'SQL_CONNECT'       => '¡Error de conexión SQL!',
+    'INVALIDCAPTCHA'    => 'La verificación falló.',
+    'DEL_SUCCEED'       => '¡Eliminado satisfactoriamente!',
+    'DEL_FAILED'        => 'No se pudo eliminar.',
+    'USERBANNEDMSG'     => 'You are banned from posting on this board.',
+    'USERBANNED'        => 'Could not complete this action because your IP is banned.',
+
+    // Moderator tools
+    'DELETE'    => 'Eliminar',
+    'PURGE'     => 'Purgar hilo',
+    'LOCK'      => 'Bloquear hilo',
+    'UNLOCK'    => 'Desbloquear hilo',
+    'BAN'       => 'Banear IP',
+    'UNBAN'     => 'Desbanear IP',
+    'MODLOGOUT' => 'Salir como moderador',
+    'MODLOGIN'  => 'Entrar como moderador',
+    'LOGOUT'    => 'Salir',
+    'LOGIN'     => 'Entrar'
+
+];

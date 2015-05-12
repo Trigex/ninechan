@@ -121,7 +121,22 @@ Version 1.10.2e (06-12-2014):
 Indonesian language file added (thanks to Flappyzor)
 
 Version 1.11alpha1 (06-12-2014):
-------------------------------
+--------------------------------
 Made configuration variables more overviewable (WILL break things if you don't update your configuration file).
 Put version number in a define at the top of the file to make changing it easier in case I decide to use it elsewhere.
 Why was the doctype statement all the way on the top above the PHP code?
+
+Version 1.11alpha2 (16-12-2014):
+--------------------------------
+Implement language version checking.
+
+-- 1.11alpha3 and alpha4 have been included in 2.0 --
+
+Version 2.0 (12-05-2015):
+--------------------------------
+Switch to PDO from MySQLi
+Change config and language handling
+Switch to ReCAPTCHA v2
+Redid JavaScript backend
+Implemented thread bumping
+Added SQL structure file
