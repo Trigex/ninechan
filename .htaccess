@@ -1,0 +1,20 @@
+##
+## ninechan .htaccess
+##
+Options +FollowSymLinks -Indexes
+
+# Disallow remote access to the configuration file
+<Files "config.php">
+
+    # Apache <= 2.2
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        deny from all
+    </IfModule>
+
+    # Apache 2.4 =>
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+
+</Files>

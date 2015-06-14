@@ -140,3 +140,11 @@ Switch to ReCAPTCHA v2
 Redid JavaScript backend
 Implemented thread bumping
 Added SQL structure file
+
+Version 2.1 (13-05-2015):
+--------------------------------
+Fixed incorrect type on date field in database (was varchar(255) must be int(11))
+Fixed incorrect identifier for BAN (left L_BAN by accident)
+Replaced all uses ot &t= with &id= for compatibility
+Added pagination to the index
+Added a set of links in the header

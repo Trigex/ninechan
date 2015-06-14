@@ -6,26 +6,12 @@
  */
 
 // Set ninechan version, don't change this or it'll probably break things.
-$version = '2.0';
+$version = '2.1';
 
 // Language file versions this version is compatible with
 $langCompat = [
-    '2.0'
+    '2.1'
 ];
-
-// Include Configuration
-require 'config.php';
-
-// Getting configuration values
-function getConfig($key) {
-
-    // Make $ninechan global
-    global $ninechan;
-
-    // Check if the key exists and return the proper string
-    return array_key_exists($key, $ninechan) ? $ninechan[$key] : null;
-
-}
 
 // Error messages
 function error($data) {
@@ -39,8 +25,24 @@ function error($data) {
 
 }
 
+// Include Configuration
+if(@!include 'config.php')
+    error('Failed to load configuration file.');
+
+// Getting configuration values
+function getConfig($key) {
+
+    // Make $ninechan global
+    global $ninechan;
+
+    // Check if the key exists and return the proper string
+    return array_key_exists($key, $ninechan) ? $ninechan[$key] : null;
+
+}
+
 // Include language file
-include 'lang/'. getConfig('lang') .'.php';
+if(@!include 'lang/'. getConfig('lang') .'.php')
+    error('Failed to load language file.');
 
 // Error Reporting
 error_reporting(getConfig('exposeErrors') ? -1 : 0);
@@ -114,22 +116,29 @@ function parsePost($content){
     // Get bbcodes file
     $bbcodes = json_decode(file_get_contents(getConfig('bbCodes')), true);
 
+    // Parse bbcodes
     $content = preg_replace(array_flip($bbcodes), $bbcodes, $content);
 
+    // Add newlines and return
     return nl2br($content);
 
 }
 
 // Generating Random Password
 function generatePassword() {
+
+    // Set characters to work with
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_@#$!*\/[]{}=+';
-    
+
+    // Generate the string
     for($i = 0, $pass = ''; $i < 34; $i++) {
         $index = rand(0, mb_strlen($chars) - 1);
         $pass .= mb_substr($chars, $index, 1);
     }
-    
+
+    // Return it
     return $pass;
+
 }
 
 // Moderation
@@ -223,7 +232,7 @@ function nHead() {
     <body>
         <h1><a href="./">'. getConfig('title') .'</a></h1>'.
         (getConfig('desc') ? '&nbsp;<i>'. getConfig('desc') .'</i>' : '')
-        .'<hr />';
+        .'<hr /><h6>[<a href="?v=index">'. getLang('INDEX') .'</a>] [<a href="?v=post">'. getLang('NEWTHREAD') .'</a>] [<a href="?v=mod">'. getLang('MANAGE') .'</a>]</h6><hr />';
 
     return $header;
 
@@ -387,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `". $sql['table'] ."` (
     `name`      varchar(255) COLLATE    utf8_bin DEFAULT NULL,
     `trip`      varchar(255) COLLATE    utf8_bin DEFAULT NULL,
     `email`     varchar(255) COLLATE    utf8_bin DEFAULT NULL,
-    `date`      varchar(255) COLLATE    utf8_bin NOT NULL,
+    `date`      int(11)                 unsigned NOT NULL,
     `content`   text COLLATE            utf8_bin NOT NULL,
     `password`  varchar(255) COLLATE    utf8_bin NOT NULL,
     `ip`        varchar(255) COLLATE    utf8_bin NOT NULL,
@@ -416,6 +425,19 @@ if($ninechan['closed']) {
 
 }
 
+// Catch &t= and redirect it properly
+if(isset($_GET['t'])) {
+
+    // Get the url and replace &t= with &id=
+    $newUrl = str_replace('t=', 'id=', $_SERVER['REQUEST_URI']);
+
+    // Redirect and exit
+    header('Location: '. $newUrl);
+    print '<meta http-equiv="refresh" content="2; URL="'. $newUrl .'" />';
+    exit;
+
+}
+
 // Check if the current IP is banned
 if(checkBan($_SERVER['REMOTE_ADDR']))
     print '<div class="banmsg">'. getLang('USERBANNEDMSG') .'</div><hr />';
@@ -436,32 +458,44 @@ if(isset($_GET['v'])) {
             print '<h2>'. getLang('THREADS') .'</h2>';
 
             // New thread link
-            print '<h3><a href="?v=post">'. getLang('NEWTHREAD') .'</a></h3>';
+            print '<h3><a href="'. $_SERVER['PHP_SELF'] .'?v=post">'. getLang('NEWTHREAD') .'</a></h3>';
 
             // Get threads
-            $threads = getPosts();
+            $threads = array_chunk(getPosts(), getConfig('threadsPerPage'), true);
 
             // If at least one post was returned print the list
             if($threads) {
 
                 print '<ol>';
 
-                foreach($threads as $thread)
-                    print '<li><a href="?v=thread&amp;t='. $thread['tid'] .'">'. $thread['title'] .'</a>';
+                foreach($threads[(isset($_GET['p']) && ($_GET['p'] - 1) >= 0 && array_key_exists(($_GET['p'] - 1), $threads)) ? $_GET['p'] - 1 : 0] as $thread)
+                    print '<li><a href="'. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='. $thread['tid'] .'">'. $thread['title'] .'</a> <span style="font-size: x-small;">[<b title="'. date(getConfig('dateFormat'), $thread['lastreply']) .'">'. (count(getPosts($thread['tid'])) - 1) .'</b>]</span>';
 
                 print '</ol>';
 
             } else // Else return EMPTY
                 print '<h3>'. getLang('EMPTY') .'</h3>';
 
+            // Pagination
+            if(count($threads) > 1) {
+
+                print '<h5 style="margin-bottom: 10px;">[';
+
+                foreach($threads as $page => $pthreads)
+                    print '<a href="?v=index&p='. ($page + 1) .'"> '. ($page + 1) .' </a>'. ($page == key(array_reverse($threads, true)) ? '' : '/');
+
+                print ']</h5>';
+
+            }
+
             // New thread link
-            print '<h3><a href="?v=post">'. getLang('NEWTHREAD') .'</a></h3>';
+            print '<h3><a href="'. $_SERVER['PHP_SELF'] .'?v=post">'. getLang('NEWTHREAD') .'</a></h3>';
             break;
 
         // Thread view
         case 'thread':
             // Just return NONEXISTENT if t is invalid
-            if(!isset($_GET['t']) || !is_numeric($_GET['t'])) {
+            if(!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
                 print('<h3>'. getLang('NONEXISTENT') .'</h3>');
                 break;
@@ -469,7 +503,7 @@ if(isset($_GET['v'])) {
             }
 
             // Strip all non-numeric characters from the string and assign it to $threadId
-            $threadId = preg_replace('/\D/', '', $_GET['t']);
+            $threadId = preg_replace('/\D/', '', $_GET['id']);
 
             // Get thread data
             $thread = getPosts($threadId);
@@ -484,7 +518,7 @@ if(isset($_GET['v'])) {
                 if($thread[0]['locked'])
                     print '<h3>'. getLang('LOCKED') .'</h3>';
                 else
-                    print '<h3><a href=?v=post&amp;t='. $thread[0]['tid'] .'>'. getLang('NEWREPLY') .'</a></h3>';
+                    print '<h3><a href='. $_SERVER['PHP_SELF'] .'?v=post&amp;id='. $thread[0]['tid'] .'>'. getLang('NEWREPLY') .'</a></h3>';
 
                 // Moderator tools
                 if($auth == $ninechan['modPass']) {
@@ -492,12 +526,12 @@ if(isset($_GET['v'])) {
                     print '<h6>';
 
                     // Purge button
-                    print '[<a href=?v=mod&amp;del=purge&amp;id='. $thread[0]['tid'] .'>'. getLang('PURGE') .'</a>]'."\r\n";
+                    print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;del=purge&amp;id='. $thread[0]['tid'] .'">'. getLang('PURGE') .'</a>]'."\r\n";
 
                     if($thread[0]['locked'])
-                        print '[<a href="?v=mod&amp;lock=false&amp;id='. $thread[0]['tid'] .'">'. getLang('UNLOCK') .'</a>]';
+                        print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;lock=false&amp;id='. $thread[0]['tid'] .'">'. getLang('UNLOCK') .'</a>]';
                     else
-                        print '[<a href="?v=mod&amp;lock=true&amp;id='. $thread[0]['tid'] .'">'. getLang('LOCK') .'</a>]';
+                        print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;lock=true&amp;id='. $thread[0]['tid'] .'">'. getLang('LOCK') .'</a>]';
 
                     print '</h6>';
 
@@ -561,15 +595,15 @@ if(isset($_GET['v'])) {
                     if($auth == $ninechan['modPass']) {
 
                         print '<h6>';
-                        print '[<a href="?v=mod&amp;del=true&id='. $post['id'] .'&amp;t='. $post['tid'] .'">'. getLang('DELETE') .'</a>]'."\r\n";
-                        print '[<a href="?v=mod&amp;ban='. ($post['ban'] ? 'false' : 'true') .'&amp;id='. $post['id'] .'&amp;t='. $post['tid'] .'">'. getLang($post['ban'] ? 'UNBAN' : 'L_BAN') .'</a>]'."\r\n";
+                        print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;del=true&id='. $post['id'] .'&amp;id='. $post['tid'] .'">'. getLang('DELETE') .'</a>]'."\r\n";
+                        print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;ban='. ($post['ban'] ? 'false' : 'true') .'&amp;id='. $post['id'] .'&amp;id='. $post['tid'] .'">'. getLang($post['ban'] ? 'UNBAN' : 'BAN') .'</a>]'."\r\n";
                         print '[IP: '.base64_decode($post['ip']).']';
                         print '</h6>';
 
                     }
 
                     // Date and ID
-                    print '<h6><i>'. date(getConfig('dateFormat'), $post['date']) .' <a href="#'. $post['id'] .'">No.</a> <a href="?v=post&amp;t='. $post['tid'] .'&amp;text=>>'. $post['id'] .'">'. $post['id'] .'</a> [<a href="?v=del&amp;id='. $post['id'] .'" title="'. getLang('DELPOST') .'">X</a>]</i></h6>';
+                    print '<h6><i>'. date(getConfig('dateFormat'), $post['date']) .' <a href="#'. $post['id'] .'">No.</a> <a href="'. $_SERVER['PHP_SELF'] .'?v=post&amp;id='. $post['tid'] .'&amp;text=>>'. $post['id'] .'">'. $post['id'] .'</a> [<a href="'. $_SERVER['PHP_SELF'] .'?v=del&amp;id='. $post['id'] .'" title="'. getLang('DELPOST') .'">X</a>]</i></h6>';
 
                     print '</fieldset>';
 
@@ -581,12 +615,12 @@ if(isset($_GET['v'])) {
                     print '<h6>';
 
                     // Purge button
-                    print '[<a href=?v=mod&amp;del=purge&amp;id='. $thread[0]['tid'] .'>'. getLang('PURGE') .'</a>]'."\r\n";
+                    print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;del=purge&amp;id='. $thread[0]['tid'] .'">'. getLang('PURGE') .'</a>]'."\r\n";
 
                     if($thread[0]['locked'])
-                        print '[<a href="?v=mod&amp;lock=false&amp;id='. $thread[0]['tid'] .'">'. getLang('UNLOCK') .'</a>]';
+                        print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;lock=false&amp;id='. $thread[0]['tid'] .'">'. getLang('UNLOCK') .'</a>]';
                     else
-                        print '[<a href="?v=mod&amp;lock=true&amp;id='. $thread[0]['tid'] .'">'. getLang('LOCK') .'</a>]';
+                        print '[<a href="'. $_SERVER['PHP_SELF'] .'?v=mod&amp;lock=true&amp;id='. $thread[0]['tid'] .'">'. getLang('LOCK') .'</a>]';
 
                     print '</h6>';
 
@@ -596,7 +630,7 @@ if(isset($_GET['v'])) {
                 if($thread[0]['locked'])
                     print '<h3>'. getLang('LOCKED') .'</h3>';
                 else
-                    print '<h3><a href=?v=post&amp;t='. $thread[0]['tid'] .'>'. getLang('NEWREPLY') .'</a></h3>';
+                    print '<h3><a href="'. $_SERVER['PHP_SELF'] .'?v=post&amp;id='. $thread[0]['tid'] .'">'. getLang('NEWREPLY') .'</a></h3>';
 
             } else {
 
@@ -630,10 +664,10 @@ if(isset($_GET['v'])) {
             $threadTitle = '';
 
             // Check if a thread ID is set
-            if(isset($_GET['t'])) {
+            if(isset($_GET['id'])) {
 
                 // If so make sure it's numeric
-                if(!is_numeric($_GET['t'])) {
+                if(!is_numeric($_GET['id'])) {
 
                     print '<h2>'. getLang('NOTNUMERIC') .'</h2>';
                     print '<a href="'. $_SERVER['PHP_SELF'] .'?v=index">'. getLang('RETURN') .'</a>';
@@ -642,7 +676,7 @@ if(isset($_GET['v'])) {
                 }
 
                 // Strip non-numerical characters from the string
-                $threadId = preg_replace('/\D/', '', $_GET['t']);
+                $threadId = preg_replace('/\D/', '', $_GET['id']);
 
                 // Get the thread data
                 $thread = getPosts($threadId);
@@ -666,7 +700,7 @@ if(isset($_GET['v'])) {
                 if($locked) {
 
                     print '<h2>'. getLang('LOCKEDMSG') .'</h2>';
-                    print '<meta http-equiv="refresh" content="2; URL="./?v=thread&t='. $thread['tid'] .'" />';
+                    print '<meta http-equiv="refresh" content="2; URL="'. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='. $thread['tid'] .'" />';
 
                 } else {
 
@@ -824,7 +858,7 @@ if(isset($_GET['v'])) {
 
             print '<h1>'. getLang('POSTED') .'</h1>';
 
-            print '<meta http-equiv="refresh" content="1; URL='. ($submitData['noredir'] ? '?v=index' : '?v=thread&amp;t='. $submitData['id']) .'" />';
+            print '<meta http-equiv="refresh" content="1; URL='. $_SERVER['PHP_SELF'] . ($submitData['noredir'] ? '?v=index' : '?v=thread&amp;id='. $submitData['id']) .'" />';
             break;
 
         case 'del':
@@ -939,8 +973,8 @@ if(isset($_GET['v'])) {
                 if(isset($_POST['modkill'])) { // POST request modkill is set...
 
                     session_destroy(); // ...kill moderator session...
-                    header('Location: ?v=mod'); // ...and redirect to ?v=mod
-                    print '<meta http-equiv="refresh" content="0; url=?v=mod" />'; // fallback
+                    header('Location: '. $_SERVER['PHP_SELF'] .'?v=mod'); // ...and redirect to ?v=mod
+                    print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=mod" />'; // fallback
                     exit;
 
                 }
@@ -952,15 +986,15 @@ if(isset($_GET['v'])) {
                 print '</form>';
 
                 // Ban handler
-                if(isset($_GET['ban']) && isset($_GET['id']) && isset($_GET['t'])) {
+                if(isset($_GET['ban']) && isset($_GET['id']) && isset($_GET['id'])) {
 
                     if($_GET['ban'] == "true")
                         nMod('ban', $_GET['id'], true);
                     else
                         nMod('ban', $_GET['id'], false);
 
-                    header('Location: ?v=thread&t='.$_GET['t']);
-                    print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['t'].'" />'; // fallback
+                    header('Location: '. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='.$_GET['id']);
+                    print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='.$_GET['id'].'" />'; // fallback
                     exit;
 
                 }
@@ -972,8 +1006,8 @@ if(isset($_GET['v'])) {
 
                         nMod('prune', $_GET['id'], true);
 
-                        header('Location: ?v=index');
-                        print '<meta http-equiv="refresh" content="0; url=?v=index" />'; // fallback
+                        header('Location: '. $_SERVER['PHP_SELF'] .'?v=index');
+                        print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=index" />'; // fallback
                             exit;
 
                     } else {
@@ -983,8 +1017,8 @@ if(isset($_GET['v'])) {
                         else
                             nMod('del', $_GET['id'], false);
 
-                        header('Location: ?v=thread&t='.$_GET['t']);
-                        print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['t'].'" />'; // fallback
+                        header('Location: '. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='.$_GET['id']);
+                        print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='.$_GET['id'].'" />'; // fallback
                         exit;
 
                     }
@@ -999,8 +1033,8 @@ if(isset($_GET['v'])) {
                     else
                         nMod('lock', $_GET['id'], false);
 
-                    header('Location: ?v=thread&t='.$_GET['id']);
-                    print '<meta http-equiv="refresh" content="0; url=?v=thread&t='.$_GET['id'].'" />'; // fallback
+                    header('Location: '. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='.$_GET['id']);
+                    print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=thread&amp;id='.$_GET['id'].'" />'; // fallback
                     exit;
 
                 }
@@ -1013,14 +1047,14 @@ if(isset($_GET['v'])) {
                     if($_POST['modPass'] == $ninechan['modPass'])
                             $_SESSION['mod'] = $ninechan['modPass'];
 
-                        header('Location: ?v=mod');
-                        print '<meta http-equiv="refresh" content="0; url=?v=mod" />'; // fallback
+                        header('Location: '. $_SERVER['PHP_SELF'] .'?v=mod');
+                        print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=mod" />'; // fallback
                         exit;
 
                     }
 
                     print '<h2>'. getLang('MODLOGIN') .'</h2>';
-                    print '<form method="post" action="'.$_SERVER['PHP_SELF'].'?v=mod">';
+                    print '<form method="post" action="'. $_SERVER['PHP_SELF'] .'?v=mod">';
                     print '<input type="password" name="modPass" /><input type="submit" value="'. getLang('LOGIN') .'" />';
                     print '</form>';
 
@@ -1029,16 +1063,16 @@ if(isset($_GET['v'])) {
 
         // Default action
         default:
-            header('Location: ?v=index'); // If invalid option is set redirect to index
-            print '<meta http-equiv="refresh" content="0; url=?v=index" />'; // Fallback because I've had experiences where header() didn't work properly
+            header('Location: '. $_SERVER['PHP_SELF'] .'?v=index'); // If invalid option is set redirect to index
+            print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=index" />'; // Fallback because I've had experiences where header() didn't work properly
             break;
 
     }
 
 } else {
 
-    header('Location: ?v=index'); // If invalid option is set redirect to index
-    print '<meta http-equiv="refresh" content="0; url=?v=index" />'; // Fallback because I've had experiences where header() didn't work properly
+    header('Location: '. $_SERVER['PHP_SELF'] .'?v=index'); // If invalid option is set redirect to index
+    print '<meta http-equiv="refresh" content="0; url='. $_SERVER['PHP_SELF'] .'?v=index" />'; // Fallback because I've had experiences where header() didn't work properly
     exit;
 
 }

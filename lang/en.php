@@ -5,7 +5,7 @@
  */
 
 // Version of ninechan this language file is created for
-$langVersion = '2.0';
+$langVersion = '2.1';
 
 $language = [
 
@@ -17,6 +17,8 @@ $language = [
     'LOCKED'    => 'Locked',
     'BY'        => 'by',
     'RETURN'    => 'Return to Index',
+    'MANAGE'    => 'Manage',
+    'INDEX'     => 'Index',
 
     // Posting
     'RETO'              => 'Reply to',

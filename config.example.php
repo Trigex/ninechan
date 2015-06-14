@@ -38,6 +38,12 @@ $ninechan['closed'] = false;
 // Set the message displayed when the board is closed
 $ninechan['closedReason'] = "Maintenance";
 
+// Set if posting should be disable (true is disabled, false is enabled)
+$ninechan['disablePosting'] = false;
+
+// Set if the board should only be accessible after entering a password (null disables this feature)
+$ninechan['boardPassword'] = null;
+
 // Board title
 $ninechan['title'] = "ninechan board";
 
@@ -46,6 +52,9 @@ $ninechan['charset'] = "utf-8";
 
 // Specify the board description (set to null to disable)
 $ninechan['desc'] = "Live development board";
+
+// Rewrite urls (requires mod_rewrite or compatible and commenting the section in .htaccess)
+$ninechan['modRewrite'] = true;
 
 // Set the paths to the CSS styles and their names (set to null to disable styles), please refrain from using special characters in titles
 $ninechan['styles'] = array(
